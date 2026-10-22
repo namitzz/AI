@@ -1,0 +1,85 @@
+---
+import SectionHead from './SectionHead.astro';
+import Icon from './Icon.astro';
+import { stages } from '../data/content';
+---
+<section class="section section--surface" id="gate" aria-labelledby="gate-title">
+  <div class="wrap">
+    <SectionHead n="02" label="The investment gate" id="gate-title">
+      <Fragment slot="title">Fund it in<br /><span class="accent">three gates.</span></Fragment>
+      <p>Money moves in stages, not in one cheque. Each gate opens only when its checklist is complete.</p>
+    </SectionHead>
+
+    <div class="gate" data-gate style="--stage:0" data-reveal>
+      <div class="gate__track" aria-hidden="true">
+        <span class="gate__line"></span>
+        <span class="gate__done"></span>
+        {stages.map((_, i) => (
+          <span class="gate__post" style={`--i:${i}`} data-post={i}>
+            <span class="gate__bar gate__bar--top"></span>
+            <span class="gate__bar gate__bar--bot"></span>
+          </span>
+        ))}
+        <span class="gate__token"></span>
+      </div>
+
+      <div class="gate__tabs" role="tablist" aria-label="Investment stages" data-tabs="gate">
+        {stages.map((s, i) => (
+          <button
+            class="gate__tab"
+            type="button"
+            role="tab"
+            id={`gtab-${s.id}`}
+            aria-controls={`gpanel-${s.id}`}
+            aria-selected={i === 0 ? 'true' : 'false'}
+            tabindex={i === 0 ? '0' : '-1'}
+            data-id={s.id}
+          >
+            <span class="gate__step label">Gate {i + 1}</span>
+            <span class="gate__name">{s.name}</span>
+          </button>
+        ))}
+      </div>
+
+      {stages.map((s, i) => (
+        <div
+          class="gate__panel"
+          role="tabpanel"
+          id={`gpanel-${s.id}`}
+          aria-labelledby={`gtab-${s.id}`}
+          tabindex="0"
+          hidden={i !== 0}
+          data-panel={s.id}
+        >
+          <p class="gate__verb label">Board decision {i + 1} of 3</p>
+          <h3 class="gate__summary">{s.summary}</h3>
+          <ul class="gate__checks" aria-label={`${s.name} checklist`}>
+            {s.checks.map((c, j) => (
+              <li style={`--j:${j}`}>
+                <span class="gate__tick" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M5 12.5 L10 17.5 L19 7" pathLength="1" /></svg>
+                </span>
+                <span>{c}</span>
+              </li>
+            ))}
+          </ul>
+          <p class="gate__rule">
+            <span class="label">Gate rule</span>
+            All four in place before {i === 0 ? 'any money moves' : i === 1 ? 'the roll out is funded' : 'it renews for another year'}.
+          </p>
+          {i < stages.length - 1 ? (
+            <button class="btn btn--ink" type="button" data-goto-stage={stages[i + 1].id}>
+              Gate cleared. Go to {stages[i + 1].name}
+              <Icon name="arrow" />
+            </button>
+          ) : (
+            <a class="btn btn--ink" href="#scorecard">
+              Now score your board
+              <Icon name="arrow" />
+            </a>
+          )}
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

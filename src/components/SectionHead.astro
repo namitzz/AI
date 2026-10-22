@@ -1,0 +1,13 @@
+---
+interface Props {
+  n: string;
+  label: string;
+  id: string;
+}
+const { n, label, id } = Astro.props;
+---
+<header class="sec-head">
+  <p class="eyebrow" data-reveal><span class="tag">{n}</span><span>{label}</span></p>
+  <h2 class="display sec-head__title" id={id} data-reveal><slot name="title" /></h2>
+  <div class="sec-head__lede" data-reveal><slot /></div>
+</header>

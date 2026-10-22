@@ -1,0 +1,71 @@
+---
+// Hidden on screen. The print stylesheet shows only this, as one A4 page.
+import QRCode from 'qrcode';
+import { pillars, scoreItems, stages, author, event, site } from '../data/content';
+import { QR_PATH } from '../../site.config.mjs';
+
+const url = new URL(QR_PATH, Astro.site).href;
+const qr = await QRCode.toString(url, { type: 'svg', errorCorrectionLevel: 'H', margin: 2, color: { dark: '#10141A', light: '#FFFFFF' } });
+const displayUrl = new URL('/', Astro.site).host;
+---
+<div class="ps" aria-hidden="true">
+  <header class="ps__head">
+    <div>
+      <p class="ps__kicker">Board checklist · {event.name} · {event.date}</p>
+      <h1 class="ps__title">Before you <span>sign off</span> on AI</h1>
+      <p class="ps__sub">{site.description.split('. ')[0]}.</p>
+    </div>
+    <div class="ps__qr">
+      <Fragment set:html={qr} />
+      <p>{displayUrl}</p>
+    </div>
+  </header>
+
+  <div class="ps__qs">
+    {pillars.map((p) => (
+      <section class="ps__pillar">
+        <h2>{p.name}</h2>
+        {p.questions.map((q) => (
+          <div class="ps__q">
+            <h3><span>{q.n}</span> {q.q}</h3>
+            <p><b>Why it matters.</b> {q.why}</p>
+            <p><b>What good looks like.</b> {q.good}</p>
+          </div>
+        ))}
+      </section>
+    ))}
+  </div>
+
+  <div class="ps__bottom">
+    <section class="ps__score">
+      <h2>Board scorecard <span data-print-score>0/5</span></h2>
+      <ul>
+        {scoreItems.map((s) => (
+          <li data-print-item={s.id}><span class="ps__box"></span><span><b>{s.label}.</b> {s.text}</span></li>
+        ))}
+      </ul>
+      <p class="ps__verdict" data-print-verdict></p>
+    </section>
+    <section class="ps__gate">
+      <h2>Investment gate</h2>
+      <div class="ps__stages">
+        {stages.map((s, i) => (
+          <div>
+            <h3>{i + 1}. {s.name}</h3>
+            <ul>{s.checks.map((c) => <li><span class="ps__box"></span>{c}</li>)}</ul>
+          </div>
+        ))}
+      </div>
+    </section>
+  </div>
+
+  <section class="ps__notes">
+    <h2>Board notes and actions</h2>
+    {[0, 1, 2, 3].map(() => <div></div>)}
+  </section>
+
+  <footer class="ps__foot">
+    <p>Built on ISO/IEC 42001, NIST AI RMF, the EU AI Act and the UK AI principles.</p>
+    <p>{author.name} · {author.course} · linkedin.com/in/namitsarna</p>
+  </footer>
+</div>

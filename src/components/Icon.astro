@@ -1,0 +1,71 @@
+---
+// Line icons drawn on a 32 grid with square caps, to sit beside 2px borders.
+interface Props {
+  name: 'value' | 'risk' | 'readiness' | 'accountability' | 'arrow' | 'arrow-down' | 'share' | 'print' | 'reset' | 'linkedin' | 'menu' | 'close' | 'external';
+  class?: string;
+}
+const { name, class: cls = '' } = Astro.props;
+---
+<svg class:list={['icon', `icon--${name}`, cls]} viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+  {name === 'value' && (
+    <>
+      <path d="M5 27 H27" />
+      <path d="M8 27 V19 M14 27 V14 M20 27 V17 M26 27 V9" />
+      <path d="M6 13 L13 7 L18 10 L26 4" />
+      <path d="M21 4 H26 V9" />
+    </>
+  )}
+  {name === 'risk' && (
+    <>
+      <path d="M5 23 A11 11 0 0 1 27 23" />
+      <path d="M16 23 L23 13" />
+      <path d="M5 27 H27" />
+      <path d="M8.5 15.5 L10 17 M16 10 V12 M23.5 15.5 L22 17" />
+    </>
+  )}
+  {name === 'readiness' && (
+    <>
+      <ellipse cx="16" cy="7" rx="10" ry="3.5" />
+      <path d="M6 7 V25 C6 27 10.5 28.5 16 28.5 C21.5 28.5 26 27 26 25 V7" />
+      <path d="M6 16 C6 18 10.5 19.5 16 19.5 C21.5 19.5 26 18 26 16" />
+      <path d="M10 24 L13 22 L16 24.5 L22 21" />
+    </>
+  )}
+  {name === 'accountability' && (
+    <>
+      <circle cx="13" cy="10" r="5" />
+      <path d="M3 28 C3 21 7.5 17.5 13 17.5 C15 17.5 16.8 18 18.3 18.8" />
+      <path d="M19 24 L22.5 27.5 L29 20.5" />
+    </>
+  )}
+  {name === 'arrow' && <path d="M5 16 H26 M19 9 L26 16 L19 23" />}
+  {name === 'arrow-down' && <path d="M16 5 V26 M9 19 L16 26 L23 19" />}
+  {name === 'share' && (
+    <>
+      <path d="M16 4 V20 M10 10 L16 4 L22 10" />
+      <path d="M8 15 H5 V28 H27 V15 H24" />
+    </>
+  )}
+  {name === 'print' && (
+    <>
+      <path d="M16 4 V20 M10 14 L16 20 L22 14" />
+      <path d="M5 22 V28 H27 V22" />
+    </>
+  )}
+  {name === 'reset' && (
+    <>
+      <path d="M7 16 A9 9 0 1 0 10 9.3" />
+      <path d="M5 4 V11 H12" />
+    </>
+  )}
+  {name === 'linkedin' && (
+    <g class="icon-fill">
+      <rect x="4" y="11" width="5" height="17" />
+      <circle cx="6.5" cy="6.5" r="3" />
+      <path d="M12 11 H17 V13.4 C18 12 19.8 10.6 22.6 10.6 C26.6 10.6 28 13.2 28 17.4 V28 H23 V18.6 C23 16.6 22.4 15.2 20.4 15.2 C18.4 15.2 17 16.6 17 18.8 V28 H12 Z" />
+    </g>
+  )}
+  {name === 'menu' && <path d="M4 9 H28 M4 16 H28 M4 23 H28" />}
+  {name === 'close' && <path d="M7 7 L25 25 M25 7 L7 25" />}
+  {name === 'external' && <path d="M12 6 H6 V26 H26 V20 M18 6 H26 V14 M26 6 L14 18" />}
+</svg>

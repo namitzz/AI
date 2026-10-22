@@ -1,0 +1,74 @@
+---
+import '../styles/site.css';
+import { site, author, event } from '../data/content';
+
+const canonical = new URL('/', Astro.site).href;
+const ogImage = new URL('/og.png', Astro.site).href;
+const fonts =
+  'https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75,800..900&family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap';
+const fullTitle = `${site.title}: 8 questions for the board | ${author.name}`;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  name: fullTitle,
+  description: site.description,
+  url: canonical,
+  author: { '@type': 'Person', name: author.name, sameAs: [author.linkedin] },
+  about: {
+    '@type': 'Event',
+    name: event.name,
+    startDate: '2026-11-04',
+    location: { '@type': 'Place', name: event.venue, address: 'Savoy Place, London WC2R 0BL, United Kingdom' },
+    organizer: [
+      { '@type': 'Organization', name: 'TÜV SÜD' },
+      { '@type': 'Organization', name: 'Aston University' },
+    ],
+  },
+};
+---
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <script is:inline>document.documentElement.classList.add('js');</script>
+    <title>{fullTitle}</title>
+    <meta name="description" content={site.description} />
+    <link rel="canonical" href={canonical} />
+    <meta name="author" content={author.name} />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#F1F0EC" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0F1218" media="(prefers-color-scheme: dark)" />
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Board sign off" />
+    <meta property="og:title" content={`${site.title}: 8 questions every board should ask`} />
+    <meta property="og:description" content={site.description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Before you sign off on AI. Eight questions every board should ask before approving AI investment." />
+    <meta property="og:locale" content="en_GB" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={`${site.title}: 8 questions every board should ask`} />
+    <meta name="twitter:description" content={site.description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preload" as="style" href={fonts} />
+    <link rel="stylesheet" href={fonts} media="print" onload="this.media='all'" />
+    <noscript><link rel="stylesheet" href={fonts} /></noscript>
+
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

@@ -1,0 +1,61 @@
+---
+import SectionHead from './SectionHead.astro';
+import Icon from './Icon.astro';
+import { frameworks } from '../data/content';
+---
+<section class="section section--surface" id="built-on" aria-labelledby="built-title">
+  <div class="wrap">
+    <SectionHead n="04" label="Built on" id="built-title">
+      <Fragment slot="title">Not opinion.<br /><span class="accent">Frameworks.</span></Fragment>
+      <p>The questions map to the standards and rules your assurance team already works with.</p>
+    </SectionHead>
+
+    <ul class="fw">
+      {frameworks.map((f) => (
+        <li class="fw__row" data-reveal>
+          <span class={`fw__motif fw__motif--${f.motif}`} aria-hidden="true">
+            {f.motif === 'iso' && (
+              <svg viewBox="0 0 64 64"><rect x="4" y="4" width="56" height="56" /><text x="32" y="38" text-anchor="middle">42001</text></svg>
+            )}
+            {f.motif === 'nist' && (
+              <svg viewBox="0 0 64 64">
+                <rect class="on" x="4" y="4" width="26" height="26" />
+                <rect x="34" y="4" width="26" height="26" />
+                <rect x="34" y="34" width="26" height="26" />
+                <rect x="4" y="34" width="26" height="26" />
+                <text x="17" y="22" text-anchor="middle" class="on-t">G</text>
+                <text x="47" y="22" text-anchor="middle">M</text>
+                <text x="47" y="52" text-anchor="middle">M</text>
+                <text x="17" y="52" text-anchor="middle">M</text>
+              </svg>
+            )}
+            {f.motif === 'eu' && (
+              <svg viewBox="0 0 64 64">
+                <rect class="on" x="24" y="4" width="16" height="11" />
+                <rect x="16" y="19" width="32" height="11" />
+                <rect x="8" y="34" width="48" height="11" />
+                <rect x="2" y="49" width="60" height="11" />
+              </svg>
+            )}
+            {f.motif === 'uk' && (
+              <svg viewBox="0 0 64 64">
+                {[0, 1, 2, 3, 4].map((i) => (
+                  <circle class={i === 0 ? 'on' : ''} cx={32 + 22 * Math.sin((i * 2 * Math.PI) / 5)} cy={34 - 22 * Math.cos((i * 2 * Math.PI) / 5)} r="7" />
+                ))}
+              </svg>
+            )}
+          </span>
+          <span class="fw__body">
+            <span class="label">{f.tag}</span>
+            <span class="fw__name">{f.name}</span>
+            <span class="fw__line">{f.line}</span>
+          </span>
+          <a class="fw__link" href={f.href} target="_blank" rel="noopener">
+            <span class="visually-hidden">Read the {f.name} source (opens in a new tab)</span>
+            <Icon name="external" />
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>

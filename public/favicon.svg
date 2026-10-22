@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <style>.s{fill:#2541E6}.c{stroke:#FFFFFF}@media (prefers-color-scheme:dark){.s{fill:#8197FF}.c{stroke:#0F1218}}</style>
+  <path class="s" d="M32 3 L57 11.5 V31 C57 45 47.5 55 32 61 C16.5 55 7 45 7 31 V11.5 Z"/>
+  <path class="c" d="M20 32 L28.5 40.5 L44.5 23.5" fill="none" stroke-width="7" stroke-linecap="square"/>
+</svg>

@@ -1,0 +1,20 @@
+{
+  "name": "boardsignoff",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Before you sign off on AI: 8 questions every board should ask before approving AI investment.",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "assets": "node scripts/build-assets.mjs"
+  },
+  "dependencies": {
+    "astro": "^5.0.0",
+    "qrcode": "^1.5.4"
+  },
+  "devDependencies": {
+    "@resvg/resvg-js": "^2.6.2"
+  }
+}

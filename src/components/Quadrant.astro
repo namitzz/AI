@@ -1,0 +1,106 @@
+---
+import SectionHead from './SectionHead.astro';
+import Icon from './Icon.astro';
+import { pillars } from '../data/content';
+---
+<section class="section" id="questions" aria-labelledby="questions-title">
+  <div class="wrap">
+    <SectionHead n="01" label="The 8 questions" id="questions-title">
+      <Fragment slot="title">Four pillars.<br /><span class="accent">Eight questions.</span></Fragment>
+      <p>Pick a pillar. Each question comes with why it matters and what a good answer looks like, so you know when you are hearing one.</p>
+    </SectionHead>
+
+    <div class="q-layout">
+      <div class="quad-wrap" data-reveal>
+        <div class="quad-box">
+        <div class="quad" role="tablist" aria-label="Pillars" aria-orientation="horizontal" data-tabs="pillars">
+          {pillars.map((p, i) => (
+            <button
+              class={`quad__cell quad__cell--${i}`}
+              type="button"
+              role="tab"
+              id={`tab-${p.id}`}
+              aria-controls={`panel-${p.id}`}
+              aria-selected={i === 0 ? 'true' : 'false'}
+              tabindex={i === 0 ? '0' : '-1'}
+              data-id={p.id}
+            >
+              <span class="quad__stack">
+                <Icon name={p.id} class="quad__icon" />
+                <span class="quad__name">{p.name}</span>
+                <span class="quad__meta">
+                  <span>Q{p.questions[0].n} + {p.questions[1].n}</span>
+                  <span class="quad__seen" aria-hidden="true">
+                    <svg viewBox="0 0 16 16"><path d="M3 8.5 L6.5 12 L13 4.5" /></svg>
+                  </span>
+                </span>
+              </span>
+            </button>
+          ))}
+        </div>
+
+        <div class="quad__core" aria-hidden="true" data-core>
+          <svg viewBox="0 0 120 136">
+            <path class="qc-body" d="M60 4 L114 22 V68 C114 100 92 122 60 132 C28 122 6 100 6 68 V22 Z" />
+            <path class="qc-check" d="M44 42 L55 53 L77 30" pathLength="1" />
+            <text x="60" y="84" text-anchor="middle">BOARD</text>
+            <text x="60" y="106" text-anchor="middle">SIGN OFF</text>
+          </svg>
+        </div>
+        </div>
+
+        <p class="quad__progress label" aria-live="polite" data-pillar-progress>1 of 4 pillars explored</p>
+      </div>
+
+      <div class="q-panels">
+        {pillars.map((p, i) => (
+          <div
+            class="q-panel"
+            role="tabpanel"
+            id={`panel-${p.id}`}
+            aria-labelledby={`tab-${p.id}`}
+            tabindex="0"
+            hidden={i !== 0}
+            data-panel={p.id}
+          >
+            <p class="q-panel__head">
+              <span class="label">Pillar {i + 1} of 4</span>
+              <span class="q-panel__tag">{p.tagline}</span>
+            </p>
+            <div class="q-cards">
+              {p.questions.map((q) => (
+                <article class="q-card" id={`q-${q.n}`} aria-labelledby={`q-${q.n}-title`}>
+                  <span class="q-card__n" aria-hidden="true">{q.n}</span>
+                  <h3 class="q-card__q" id={`q-${q.n}-title`}>
+                    <span class="visually-hidden">Question {q.n}: </span>{q.q}
+                  </h3>
+                  <dl class="q-card__dl">
+                    <div class="q-card__why">
+                      <dt class="label">Why it matters</dt>
+                      <dd>{q.why}</dd>
+                    </div>
+                    <div class="q-card__good">
+                      <dt class="label">What good looks like</dt>
+                      <dd>{q.good}</dd>
+                    </div>
+                  </dl>
+                </article>
+              ))}
+            </div>
+            {i < pillars.length - 1 ? (
+              <button class="btn btn--ghost q-next" type="button" data-goto-pillar={pillars[i + 1].id}>
+                Next pillar: {pillars[i + 1].name}
+                <Icon name="arrow" />
+              </button>
+            ) : (
+              <a class="btn btn--ghost q-next" href="#gate">
+                All eight asked. On to the gate
+                <Icon name="arrow" />
+              </a>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>

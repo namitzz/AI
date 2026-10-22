@@ -1,0 +1,103 @@
+---
+// The signature mark: a shield holding a small AI network, with a checked
+// core node and a dashed orbit. `hero` adds the load sequence, scan line,
+// diagram callouts and data packets.
+interface Props {
+  variant?: 'hero' | 'plain';
+  class?: string;
+}
+const { variant = 'plain', class: cls = '' } = Astro.props;
+const hero = variant === 'hero';
+
+const shield = 'M200 44 L320 88 V196 C320 270 268 326 200 356 C132 326 80 270 80 196 V88 Z';
+const core = { x: 200, y: 200 };
+const nodes = [
+  { x: 140, y: 126 },
+  { x: 200, y: 100 },
+  { x: 260, y: 126 },
+  { x: 290, y: 198 },
+  { x: 250, y: 270 },
+  { x: 200, y: 304 },
+  { x: 150, y: 270 },
+  { x: 110, y: 198 },
+];
+// Ring around the outer nodes plus spokes into the core.
+const ring = nodes.map((n, i) => [n, nodes[(i + 1) % nodes.length]]);
+const spokes = [0, 2, 3, 4, 6, 7].map((i) => [nodes[i], core]);
+const edges = [...ring, ...spokes].map(([a, b]) => `M${a.x} ${a.y} L${b.x} ${b.y}`);
+
+const callouts = [
+  { label: 'DATA', from: nodes[0], to: { x: 40, y: 70 }, anchor: 'start' },
+  { label: 'MODEL', from: nodes[2], to: { x: 360, y: 70 }, anchor: 'end' },
+  { label: 'PEOPLE', from: nodes[7], to: { x: 18, y: 300 }, anchor: 'start' },
+  { label: 'CONTROLS', from: nodes[3], to: { x: 382, y: 300 }, anchor: 'end' },
+];
+// Packets travel along a few spokes once the sequence settles.
+const packets = [
+  { path: `M${nodes[0].x} ${nodes[0].y} L${core.x} ${core.y}`, dur: '2.4s', begin: '0s' },
+  { path: `M${nodes[3].x} ${nodes[3].y} L${core.x} ${core.y}`, dur: '2s', begin: '0.7s' },
+  { path: `M${nodes[6].x} ${nodes[6].y} L${core.x} ${core.y}`, dur: '2.8s', begin: '1.3s' },
+  { path: `M${nodes[1].x} ${nodes[1].y} L${nodes[2].x} ${nodes[2].y} L${nodes[3].x} ${nodes[3].y}`, dur: '3.2s', begin: '0.3s' },
+];
+---
+<svg
+  class:list={['shield', hero && 'shield--hero', cls]}
+  viewBox="0 0 400 400"
+  role="img"
+  aria-label="A shield containing a network of AI nodes, with a checked core at its centre"
+  data-shield={hero ? 'hero' : undefined}
+>
+  <defs>
+    <clipPath id={hero ? 'shield-clip-hero' : undefined}>
+      <path d={shield} />
+    </clipPath>
+  </defs>
+
+  <g class="sh-orbit-wrap">
+    <circle class="sh-orbit" cx="200" cy="200" r="186" pathLength="360" />
+  </g>
+
+  {hero && (
+    <g class="sh-callouts" aria-hidden="true">
+      {callouts.map((c, i) => (
+        <g style={`--i:${i}`}>
+          <path class="sh-leader" d={`M${c.from.x} ${c.from.y} L${c.to.x} ${c.to.y + 8}`} pathLength="1" />
+          <text x={c.to.x} y={c.to.y} text-anchor={c.anchor}>{c.label}</text>
+        </g>
+      ))}
+    </g>
+  )}
+
+  <path class="sh-body" d={shield} pathLength="1" />
+
+  {hero && (
+    <g clip-path="url(#shield-clip-hero)">
+      <rect class="sh-scan" x="70" y="40" width="260" height="4" />
+    </g>
+  )}
+
+  <g class="sh-edges">
+    {edges.map((d, i) => <path d={d} pathLength="1" style={`--i:${i}`} />)}
+  </g>
+
+  {hero && (
+    <g class="sh-packets" aria-hidden="true">
+      {packets.map((p) => (
+        <rect x="-4" y="-4" width="8" height="8">
+          <animateMotion dur={p.dur} begin="indefinite" repeatCount="indefinite" path={p.path} data-begin={p.begin} />
+        </rect>
+      ))}
+    </g>
+  )}
+
+  <g class="sh-nodes">
+    {nodes.map((n, i) => <circle cx={n.x} cy={n.y} r="10" style={`--i:${i}`} />)}
+  </g>
+
+  {hero && <circle class="sh-ping" cx={core.x} cy={core.y} r="32" />}
+
+  <g class="sh-core">
+    <circle cx={core.x} cy={core.y} r="32" />
+    <path class="sh-check" d="M184 201 L196 213 L218 188" pathLength="1" />
+  </g>
+</svg>
