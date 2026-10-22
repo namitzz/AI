@@ -1,13 +1,14 @@
 ---
 import SectionHead from './SectionHead.astro';
 import Icon from './Icon.astro';
+import QArt from './QArt.astro';
 import { pillars } from '../data/content';
 ---
 <section class="section" id="questions" aria-labelledby="questions-title">
   <div class="wrap">
-    <SectionHead n="01" label="The 8 questions" id="questions-title">
+    <SectionHead n="02" label="The 8 questions" id="questions-title">
       <Fragment slot="title">Four pillars.<br /><span class="accent">Eight questions.</span></Fragment>
-      <p>Pick a pillar. Each question comes with why it matters and what a good answer looks like, so you know when you are hearing one.</p>
+      <p>The poster asks them. Here are the answers to expect. Pick a pillar: each question comes with why it matters and what good looks like, so you know a good answer when you hear one.</p>
     </SectionHead>
 
     <div class="q-layout">
@@ -70,7 +71,10 @@ import { pillars } from '../data/content';
             <div class="q-cards">
               {p.questions.map((q) => (
                 <article class="q-card" id={`q-${q.n}`} aria-labelledby={`q-${q.n}-title`}>
-                  <span class="q-card__n" aria-hidden="true">{q.n}</span>
+                  <div class="q-card__top">
+                    <span class="q-card__n" aria-hidden="true">{q.n}</span>
+                    <QArt art={q.art} />
+                  </div>
                   <h3 class="q-card__q" id={`q-${q.n}-title`}>
                     <span class="visually-hidden">Question {q.n}: </span>{q.q}
                   </h3>

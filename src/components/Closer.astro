@@ -4,30 +4,32 @@ import { author, event } from '../data/content';
 ---
 <section class="closer" id="connect" aria-labelledby="closer-title">
   <div class="wrap">
-    <p class="eyebrow closer__eyebrow"><span class="tag">05</span><span>The point</span></p>
+    <p class="eyebrow"><span class="tag">07</span><span>The rule</span></p>
     <h2 class="display closer__title" id="closer-title" data-closer>
-      <span class="line" style="--l:0">Security and</span>
-      <span class="line" style="--l:1">assurance</span>
-      <span class="line" style="--l:2">aren’t the</span>
-      <span class="line" style="--l:3"><span class="brake">brake<svg viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path d="M0 5 H100" pathLength="1" /></svg></span>.</span>
-      <span class="line" style="--l:4">They’re the</span>
-      <span class="line closer__accel" style="--l:5"><span class="accel">accelerator.</span></span>
+      <span class="line" style="--l:0">No evidence.</span>
+      <span class="line accent" style="--l:1">No sign-off.</span>
     </h2>
 
-    <div class="closer__cta">
+    <p class="closer__quote" data-closer>
+      Security and assurance aren’t the <span class="brake">brake<svg viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path d="M0 5 H100" pathLength="1" /></svg></span>. They’re the <span class="accel">accelerator.</span>
+    </p>
+  </div>
+
+  <div class="closer__panel">
+    <div class="wrap closer__cta">
       <a class="li-btn" href={author.linkedin} target="_blank" rel="noopener me">
         <Icon name="linkedin" />
         <span class="li-btn__text">
-          <span class="li-btn__top">Let’s talk AI assurance</span>
+          <span class="li-btn__top">Talk to Namit about AI assurance</span>
           <span class="li-btn__main">Connect on LinkedIn</span>
         </span>
         <Icon name="arrow" class="li-btn__arrow" />
       </a>
 
-      <div class="credit">
-        <p class="credit__name">{author.name}</p>
-        <p class="credit__course">{author.course}</p>
-      </div>
+      <p class="credit">
+        <span class="credit__name">{author.name}</span>
+        <span class="credit__course">{author.course} · IET London, {event.date}</span>
+      </p>
 
       <div class="closer__more">
         <button class="btn btn--onaccent" type="button" data-print>
@@ -46,6 +48,6 @@ import { author, event } from '../data/content';
 <footer class="footer">
   <div class="wrap footer__inner">
     <p>Made for {event.name}, {event.hosts}, {event.venue}, {event.date}.</p>
-    <p>No cookies. Visits are counted anonymously. Your scorecard stays on your device.</p>
+    <p>A practical framework, not a compliance guarantee. No cookies; visits are counted anonymously. Your scorecard stays on your device.</p>
   </div>
 </footer>

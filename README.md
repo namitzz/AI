@@ -1,20 +1,23 @@
 # Before you sign off on AI
 
-Companion site for the poster *"Before you sign off on AI: 8 questions every board should ask before approving AI investment"*, shown at **AI Essentials, Assurance & Business Leadership** (TÜV SÜD and Aston University, IET London, Savoy Place, 4 November 2026).
+Companion site for the poster *"Before you sign off on AI"*, shown at **AI Essentials, Assurance & Business Leadership** (TÜV SÜD and Aston University, IET London, Savoy Place, 4 November 2026).
 
-By [Namit Sarna](https://www.linkedin.com/in/namitsarna), MSc AI for Business Transformation (with Capgemini), Aston University.
+By [Namit Sarna](https://www.linkedin.com/in/namitsarna), MSc AI for Business Transformation, Aston University.
 
 ## What is in it
 
-- **Hero** with a self-drawing shield graphic (shield, network, checked core, orbit) and a 2 minute route.
-- **The 8 questions**: four-pillar quadrant (ARIA tabs) with "Why it matters" and "What good looks like" for each question.
-- **The investment gate**: Pilot, Scale, Run, with gates that open as you go.
-- **Board scorecard**: five checks, a live meter, a verdict, suggested questions, a "Signed off" stamp at 5/5, saved on the device, shareable as `/#score=N`.
-- **Built on**: ISO/IEC 42001, NIST AI RMF, EU AI Act, UK AI principles.
-- **One-page A4 board checklist** via the print stylesheet (includes the scorecard state and a QR code).
-- Open Graph image, favicons, Vercel Web Analytics (cookieless), dark mode and reduced-motion support.
+Central idea: **sign-off is a licence, not a verdict.** The AI a board approved can be updated by the vendor, fed new data, given new permissions or used in new ways, and then it is no longer the thing they approved.
 
-Stack: [Astro](https://astro.build) static output, one small vanilla TypeScript file (under 4 kB gzipped), no images except generated PNGs for social sharing and icons.
+- **Hero**: a 3D point-cloud shield (raw WebGL, about 3 kB) that assembles on load, turns when dragged, and drifts apart as you scroll. Falls back to the animated SVG shield without WebGL or with reduced motion. Big "Score yours" button.
+- **The gap**: scroll story. A sticky AI system licence changes row by row (model, data, permissions, use) until it is stamped "Not what you approved".
+- **The 8 questions**: four-pillar quadrant (ARIA tabs), each question with a line illustration, why it matters and what good looks like.
+- **The pilot trap**: Gartner forecast (29 July 2024), presented as a forecast.
+- **The investment gate**: three gates with the licence loop animation: a change hits Run, the licence expires, and it loops back to Scale for re-approval.
+- **Board scorecard**: evidence-only scoring, controls can be marked critical (a missing critical control blocks approval), "Licensed" or "Blocked" stamps, saved on the device, shareable as `/#score=N`.
+- **Informed by**: ISO/IEC 42001, NIST AI RMF, EU AI Act, UK AI principles, plus the UK AI Risk Management Toolkit.
+- **One-page A4 board checklist** via the print stylesheet, including the visitor's scorecard and critical flags.
+
+Stack: [Astro](https://astro.build) static output, vanilla TypeScript (about 5 kB gzipped, plus the 3 kB WebGL shield loaded after first paint). All graphics are inline SVG or WebGL; the only images are generated PNGs for social sharing and icons.
 
 ## Develop
 

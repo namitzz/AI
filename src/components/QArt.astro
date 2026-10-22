@@ -1,0 +1,112 @@
+---
+// One small line illustration per question. Decorative: the question text
+// carries the meaning. Paths with class "d" draw themselves in on reveal.
+import type { Art } from '../data/content';
+interface Props { art: Art }
+const { art } = Astro.props;
+---
+<svg class={`q-art q-art--${art}`} viewBox="0 0 160 110" aria-hidden="true" focusable="false">
+  {art === 'switch' && (
+    <>
+      <rect class="d" x="12" y="36" width="78" height="40" pathLength="1" />
+      <rect class="fill-ink pop" x="17" y="41" width="30" height="30" />
+      <text class="t-mono" x="58" y="61">OFF</text>
+      <rect class="d" x="104" y="22" width="46" height="56" pathLength="1" />
+      <rect class="fill-acc pop" x="104" y="22" width="46" height="13" />
+      <text class="t-disp" x="127" y="66" text-anchor="middle">+1</text>
+      <text class="t-mono t-small" x="127" y="92" text-anchor="middle">TOMORROW</text>
+      <path class="d" d="M51 76 V98 H104" pathLength="1" />
+    </>
+  )}
+  {art === 'scales' && (
+    <>
+      <path class="d" d="M80 18 V96 M54 96 H106" pathLength="1" />
+      <path class="d beam" d="M28 44 L132 30" pathLength="1" />
+      <path class="d" d="M28 44 L16 68 M28 44 L40 68 M132 30 L120 54 M132 30 L144 54" pathLength="1" />
+      <path class="d" d="M12 68 H44 L38 76 H18 Z M116 54 H148 L142 62 H122 Z" pathLength="1" />
+      <path class="stroke-acc d" d="M28 62 V48 M22 54 L28 48 L34 54" pathLength="1" />
+      <path class="d" d="M125 34 H139 L125 48 H139 Z" pathLength="1" />
+      <text class="t-mono t-small" x="28" y="92" text-anchor="middle">ACT</text>
+      <text class="t-mono t-small" x="132" y="80" text-anchor="middle">WAIT</text>
+    </>
+  )}
+  {art === 'inject' && (
+    <>
+      <rect class="d" x="8" y="62" width="108" height="30" pathLength="1" />
+      <text class="t-mono t-small" x="16" y="81">ignore all rules</text>
+      <rect class="fill-ink blink" x="104" y="70" width="3" height="14" />
+      <rect class="fill-acc pop" x="112" y="10" width="40" height="26" />
+      <text class="t-mono t-on" x="132" y="28" text-anchor="middle">{'{ }'}</text>
+      <path class="stroke-acc d dash" d="M132 38 C132 54 112 52 98 62" pathLength="1" />
+      <path class="d" d="M138 66 L154 96 H122 Z M138 76 V86" pathLength="1" />
+    </>
+  )}
+  {art === 'headline' && (
+    <>
+      <rect class="d" x="18" y="8" width="124" height="94" pathLength="1" />
+      <path class="d" d="M18 24 H142" pathLength="1" />
+      <text class="t-mono t-small" x="26" y="20">THE DAILY</text>
+      <rect class="fill-acc pop" x="26" y="31" width="108" height="18" />
+      <text class="t-disp t-on t-mid" x="80" y="45" text-anchor="middle">AI FAILURE</text>
+      <path class="d" d="M26 60 H74 M26 68 H74 M26 76 H74 M26 84 H64" pathLength="1" />
+      <rect class="d" x="82" y="56" width="52" height="38" pathLength="1" />
+      <path class="d" d="M82 56 L134 94 M134 56 L82 94" pathLength="1" />
+    </>
+  )}
+  {art === 'update' && (
+    <>
+      <path class="d" d="M34 12 A18 18 0 1 0 50 40 A13 13 0 1 1 34 12 Z" pathLength="1" />
+      <rect class="fill-ink pop" x="58" y="14" width="4" height="4" />
+      <rect class="fill-ink pop" x="70" y="28" width="3" height="3" />
+      <text class="t-mono t-small" x="62" y="44">UPDATED 02:14</text>
+      <rect class="d" x="8" y="56" width="52" height="30" pathLength="1" />
+      <text class="t-mono" x="34" y="76" text-anchor="middle">v1.0</text>
+      <path class="d" d="M66 71 H96 M88 63 L96 71 L88 79" pathLength="1" />
+      <rect class="fill-acc pop" x="102" y="56" width="52" height="30" />
+      <text class="t-mono t-on" x="128" y="76" text-anchor="middle">v1.1</text>
+      <text class="t-mono t-small" x="128" y="102" text-anchor="middle">NOBODY TOLD?</text>
+    </>
+  )}
+  {art === 'manual' && (
+    <>
+      <rect class="d" x="14" y="16" width="64" height="88" pathLength="1" />
+      <rect class="fill-ink pop" x="32" y="10" width="28" height="12" />
+      <path class="d" d="M24 34 H34 V44 H24 Z M24 56 H34 V66 H24 Z M24 78 H34 V88 H24 Z" pathLength="1" />
+      <path class="d" d="M40 39 H68 M40 61 H68 M40 83 H62" pathLength="1" />
+      <path class="stroke-acc d" d="M25 38 L29 42 L36 33" pathLength="1" />
+      <circle class="d" cx="118" cy="64" r="30" pathLength="1" />
+      <rect class="fill-ink pop" x="112" y="24" width="12" height="8" />
+      <path class="stroke-acc thick d" d="M118 38 A26 26 0 0 1 144 64" pathLength="1" />
+      <path class="d hand" d="M118 64 L118 44" pathLength="1" />
+    </>
+  )}
+  {art === 'clock' && (
+    <>
+      <circle class="d" cx="48" cy="56" r="38" pathLength="1" />
+      <path class="d" d="M48 22 V28 M82 56 H76 M48 90 V84 M14 56 H20" pathLength="1" />
+      <path class="d" d="M48 56 H68 M48 56 V30" pathLength="1" />
+      <rect class="fill-ink pop" x="45" y="53" width="6" height="6" />
+      <text class="t-mono t-small" x="48" y="106" text-anchor="middle">03:00</text>
+      <rect class="fill-acc pop" x="104" y="28" width="48" height="48" />
+      <path class="stroke-on" d="M120 44 A12 12 0 1 0 136 44 M128 34 V50" />
+      <text class="t-mono t-small" x="128" y="94" text-anchor="middle">STOP</text>
+    </>
+  )}
+  {art === 'stack' && (
+    <>
+      {[0, 1, 2, 3, 4, 5, 6, 7].map((i) => (
+        <rect class="d" x={14 + (i % 2) * 4} y={92 - i * 9} width="80" height="8" pathLength="1" style={`--k:${i}`} />
+      ))}
+      {[0, 2, 4, 6].map((i) => (
+        <path class="stroke-acc" d={`M${72 + (i % 4)} ${96 - i * 9 - 3} l3 3 l6 -6`} />
+      ))}
+      <g class="stamp-art">
+        <rect class="d" x="108" y="8" width="16" height="22" pathLength="1" />
+        <rect class="d" x="100" y="30" width="32" height="8" pathLength="1" />
+      </g>
+      <rect class="stroke-acc d" x="102" y="50" width="48" height="24" pathLength="1" transform="rotate(-8 126 62)" />
+      <text class="t-disp t-acc" x="126" y="68" text-anchor="middle" transform="rotate(-8 126 62)">OK</text>
+      <text class="t-mono t-small" x="126" y="98" text-anchor="middle">200 / DAY</text>
+    </>
+  )}
+</svg>

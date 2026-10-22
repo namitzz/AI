@@ -1,13 +1,13 @@
 ---
 import SectionHead from './SectionHead.astro';
 import Icon from './Icon.astro';
-import { frameworks } from '../data/content';
+import { frameworks, toolkit, disclaimer } from '../data/content';
 ---
-<section class="section section--surface" id="built-on" aria-labelledby="built-title">
+<section class="section" id="built-on" aria-labelledby="built-title">
   <div class="wrap">
-    <SectionHead n="04" label="Built on" id="built-title">
+    <SectionHead n="06" label="Informed by" id="built-title">
       <Fragment slot="title">Not opinion.<br /><span class="accent">Frameworks.</span></Fragment>
-      <p>The questions map to the standards and rules your assurance team already works with.</p>
+      <p>The questions, gates and scorecard draw on the standards and rules your assurance team already uses.</p>
     </SectionHead>
 
     <ul class="fw">
@@ -51,11 +51,20 @@ import { frameworks } from '../data/content';
             <span class="fw__line">{f.line}</span>
           </span>
           <a class="fw__link" href={f.href} target="_blank" rel="noopener">
-            <span class="visually-hidden">Read the {f.name} source (opens in a new tab)</span>
+            <span class="visually-hidden">Read about {f.name} (opens in a new tab)</span>
             <Icon name="external" />
           </a>
         </li>
       ))}
     </ul>
+
+    <a class="toolkit" href={toolkit.href} target="_blank" rel="noopener" data-reveal>
+      <span class="label">Resource</span>
+      <span class="toolkit__name">{toolkit.name}</span>
+      <span class="toolkit__line">{toolkit.line}</span>
+      <span class="toolkit__go">Open on GOV.UK <Icon name="external" /><span class="visually-hidden"> (opens in a new tab)</span></span>
+    </a>
+
+    <p class="disclaimer" data-reveal>{disclaimer}</p>
   </div>
 </section>

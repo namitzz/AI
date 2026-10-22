@@ -1,0 +1,40 @@
+---
+import { pilotTrap } from '../data/content';
+// Ten proof-of-concept tiles, three of which fall away: an illustration of
+// "at least 30%", not data.
+const dropped = new Set([2, 5, 9]);
+---
+<section class="section section--surface trap" id="pilot-trap" aria-labelledby="trap-title">
+  <div class="wrap">
+    <p class="eyebrow" data-reveal><span class="tag">03</span><span>The pilot trap</span></p>
+
+    <div class="trap__grid">
+      <div class="trap__figure" data-reveal>
+        <h2 class="visually-hidden" id="trap-title">The pilot trap</h2>
+        <p class="trap__num display" aria-hidden="true">{pilotTrap.figure}</p>
+        <p class="trap__tag">{pilotTrap.tag}</p>
+      </div>
+
+      <div class="trap__tiles" aria-hidden="true" data-reveal>
+        {Array.from({ length: 10 }, (_, i) => (
+          <span class:list={['trap__tile', dropped.has(i) && 'is-dropped']} style={`--i:${i}`}>
+            <span>PoC</span>
+          </span>
+        ))}
+        <span class="trap__legend label">Illustration of 30%, not data</span>
+      </div>
+
+      <div class="trap__copy" data-reveal>
+        <p class="trap__claim">{pilotTrap.claim}</p>
+        <ul class="trap__reasons" aria-label="Reasons given">
+          {pilotTrap.reasons.map((r) => <li>{r}</li>)}
+        </ul>
+        <p class="trap__source"><span class="label">Source</span> {pilotTrap.source}. {pilotTrap.caveat}</p>
+      </div>
+    </div>
+
+    <p class="trap__line display" data-reveal>
+      Getting AI live was the 2025 problem. <span class="accent">Keeping it approved is the next one.</span>
+    </p>
+  </div>
+</section>

@@ -1,13 +1,7 @@
 ---
 import ShieldMark from './ShieldMark.astro';
 import Icon from './Icon.astro';
-import { event } from '../data/content';
-
-const route = [
-  { href: '#questions', n: '01', label: 'Read the 8 questions' },
-  { href: '#gate', n: '02', label: 'Walk the investment gate' },
-  { href: '#scorecard', n: '03', label: 'Score your board' },
-];
+import { event, site } from '../data/content';
 ---
 <section class="hero" id="top" aria-labelledby="hero-title">
   <div class="hero__grid wrap">
@@ -21,31 +15,35 @@ const route = [
         <span class="line hero__accent"><span class="hero__mark">Sign off</span></span>
         <span class="line">on AI</span>
       </h1>
-      <p class="hero__sub">Eight questions every board should ask before approving AI investment.</p>
+      <p class="hero__hook">{site.hook}</p>
+      <p class="hero__sub">{site.support}</p>
+      <div class="hero__ctas">
+        <a class="score-cta" href="#scorecard">
+          <span class="score-cta__label">Score yours</span>
+          <span class="score-cta__meta"><span data-bar-score>0/5</span> · 30 seconds</span>
+          <Icon name="arrow-down" class="score-cta__icon" />
+        </a>
+        <a class="btn btn--ghost hero__second" href="#questions">
+          Read the 8 questions
+          <Icon name="arrow" />
+        </a>
+      </div>
     </div>
 
-    <div class="hero__art" data-tilt>
+    <figure class="hero__art" data-hero-art>
       <ShieldMark variant="hero" />
-    </div>
+      <canvas class="hero__canvas" aria-hidden="true" data-shield3d></canvas>
+      <figcaption class="hero__status" aria-hidden="true">
+        <span class="hero__status-dot"></span>
+        <span data-status-text>Status: approved, v1.0</span>
+      </figcaption>
+      <p class="hero__drag label" aria-hidden="true">Drag to turn it</p>
+    </figure>
 
-    <div class="hero__route">
-      <p class="label" id="route-label">Your 2 minute route</p>
-      <ol class="route" aria-labelledby="route-label">
-        {route.map((r, i) => (
-          <li>
-            <a class:list={['route__link', i === 0 && 'route__link--primary']} href={r.href}>
-              <span class="route__n">{r.n}</span>
-              <span class="route__label">{r.label}</span>
-              <Icon name="arrow" />
-            </a>
-          </li>
-        ))}
-      </ol>
-      <p class="hero__event">
-        <span class="label">At</span>
-        {event.name}. {event.hosts}, {event.venue}, {event.date}.
-      </p>
-    </div>
+    <p class="hero__event">
+      <span class="label">At</span>
+      {event.name}. {event.hosts}, {event.venue}, {event.date}.
+    </p>
   </div>
 </section>
 
@@ -53,7 +51,7 @@ const route = [
   <div class="ticker__track">
     {[0, 1].map(() => (
       <span class="ticker__set">
-        {['AI governance', 'Regulation', 'Assurance', 'AI and cyber risk', 'Security as a business enabler'].map((t) => (
+        {['Sign-off is a licence', 'not a verdict', 'No evidence', 'No sign-off', 'Any change: re-approve'].map((t) => (
           <>
             <span>{t}</span>
             <svg viewBox="0 0 32 32"><path d="M16 2.5 L27 6.5 V15.5 C27 22 22.5 26.8 16 29.5 C9.5 26.8 5 22 5 15.5 V6.5 Z" /></svg>

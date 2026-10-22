@@ -1,7 +1,7 @@
 ---
 // Hidden on screen. The print stylesheet shows only this, as one A4 page.
 import QRCode from 'qrcode';
-import { pillars, scoreItems, stages, author, event, site } from '../data/content';
+import { pillars, scoreItems, stages, author, event, site, gateRule, gateNote, loopLabel, scoreInstruction, disclaimer } from '../data/content';
 import { QR_PATH } from '../../site.config.mjs';
 
 const url = new URL(QR_PATH, Astro.site).href;
@@ -13,7 +13,7 @@ const displayUrl = new URL('/', Astro.site).host;
     <div>
       <p class="ps__kicker">Board checklist · {event.name} · {event.date}</p>
       <h1 class="ps__title">Before you <span>sign off</span> on AI</h1>
-      <p class="ps__sub">{site.description.split('. ')[0]}.</p>
+      <p class="ps__sub">{site.hook} {site.idea}</p>
     </div>
     <div class="ps__qr">
       <Fragment set:html={qr} />
@@ -39,33 +39,36 @@ const displayUrl = new URL('/', Astro.site).host;
   <div class="ps__bottom">
     <section class="ps__score">
       <h2>Board scorecard <span data-print-score>0/5</span></h2>
+      <p class="ps__small">{scoreInstruction.join(' ')}</p>
       <ul>
         {scoreItems.map((s) => (
-          <li data-print-item={s.id}><span class="ps__box"></span><span><b>{s.label}.</b> {s.text}</span></li>
+          <li data-print-item={s.id}><span class="ps__box"></span><span><b>{s.label}.</b> {s.text}<em class="ps__crit"> Critical</em></span></li>
         ))}
       </ul>
       <p class="ps__verdict" data-print-verdict></p>
     </section>
     <section class="ps__gate">
       <h2>Investment gate</h2>
+      <p class="ps__rule">{gateRule} <span>{gateNote}</span></p>
       <div class="ps__stages">
         {stages.map((s, i) => (
-          <div>
-            <h3>{i + 1}. {s.name}</h3>
+          <div class:list={[i === 2 && 'ps__run']}>
+            <h3>{i + 1}. {s.name}: {s.decision}</h3>
             <ul>{s.checks.map((c) => <li><span class="ps__box"></span>{c}</li>)}</ul>
           </div>
         ))}
       </div>
+      <p class="ps__loop">↺ {loopLabel}. Change means model, data, permissions or use. {site.idea}</p>
     </section>
   </div>
 
   <section class="ps__notes">
     <h2>Board notes and actions</h2>
-    {[0, 1, 2, 3].map(() => <div></div>)}
+    {[0, 1].map(() => <div></div>)}
   </section>
 
   <footer class="ps__foot">
-    <p>Built on ISO/IEC 42001, NIST AI RMF, the EU AI Act and the UK AI principles.</p>
+    <p>Informed by ISO/IEC 42001, NIST AI RMF, the EU AI Act and the UK AI principles. {disclaimer}</p>
     <p>{author.name} · {author.course} · linkedin.com/in/namitsarna</p>
   </footer>
 </div>

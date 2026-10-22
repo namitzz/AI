@@ -3,7 +3,7 @@
 const $ = <T extends Element = HTMLElement>(sel: string, root: ParentNode = document) => root.querySelector<T>(sel);
 const $$ = <T extends Element = HTMLElement>(sel: string, root: ParentNode = document) => Array.from(root.querySelectorAll<T>(sel));
 const motionOK = () => !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-const STORE_KEY = 'signoff-scorecard-v1';
+const STORE_KEY = 'signoff-scorecard-v2';
 
 function buzz(pattern: number | number[]) {
   if (motionOK() && 'vibrate' in navigator) {
@@ -132,46 +132,83 @@ function initReveal() {
   els.forEach((el) => io.observe(el));
 }
 
-/* ---------------- Hero shield: packets and tilt ---------------- */
+/* ---------------- Hero: 3D shield, drift on scroll ---------------- */
 
 function initHero() {
+  const art = $('[data-hero-art]');
   const svg = $<SVGSVGElement>('[data-shield="hero"]');
-  if (!svg || !motionOK()) return;
+  const canvas = $<HTMLCanvasElement>('[data-shield3d]');
+  const status = $('[data-status-text]');
+  if (!art || !svg || !motionOK()) return;
 
-  window.setTimeout(() => {
+  // Fallback mark: start the data packets once the draw-in settles.
+  const startPackets = () => window.setTimeout(() => {
     svg.classList.add('is-live');
     $$<SVGAnimationElement>('animateMotion', svg).forEach((a) => {
-      const delay = parseFloat(a.dataset.begin || '0') * 1000;
-      window.setTimeout(() => a.beginElement(), delay);
+      window.setTimeout(() => a.beginElement(), parseFloat(a.dataset.begin || '0') * 1000);
     });
   }, 2300);
 
-  const art = $('[data-tilt]');
-  if (!art) return;
-  let raf = 0;
-  const set = (x: number, y: number) => {
-    cancelAnimationFrame(raf);
-    raf = requestAnimationFrame(() => {
-      art.style.setProperty('--ry', `${x * 10}deg`);
-      art.style.setProperty('--rx', `${-y * 10}deg`);
-    });
-  };
-  if (window.matchMedia('(hover: hover)').matches) {
-    window.addEventListener('pointermove', (e) => {
-      set(e.clientX / window.innerWidth - 0.5, e.clientY / window.innerHeight - 0.5);
-    }, { passive: true });
+  let setDrift: ((d: number) => void) | null = null;
+  if (canvas) {
+    import('./shield3d').then(({ mountShield3D }) => {
+      const api = mountShield3D(canvas);
+      if (!api) { startPackets(); return; }
+      art.classList.add('is-3d');
+      setDrift = api.setDrift;
+      onScroll();
+    }).catch(startPackets);
   } else {
-    // On phones, lean the shield gently as the page scrolls past it.
-    window.addEventListener('scroll', () => {
-      const r = art.getBoundingClientRect();
-      if (r.bottom < 0) return;
-      const t = Math.max(-0.5, Math.min(0.5, (r.top + r.height / 2) / window.innerHeight - 0.5));
-      set(0, t);
-    }, { passive: true });
+    startPackets();
   }
+
+  // As the hero scrolls away, the approved model starts to drift.
+  let drifting = false;
+  const onScroll = () => {
+    const r = art.getBoundingClientRect();
+    // Intact while centred on screen; drifts as it rises off the top.
+    const centre = r.top + r.height / 2;
+    const d = Math.max(0, Math.min(1, (window.innerHeight * 0.4 - centre) / (r.height * 0.7)));
+    setDrift?.(d);
+    const now = d > 0.28;
+    if (now !== drifting) {
+      drifting = now;
+      art.classList.toggle('is-drifting', now);
+      if (status) status.textContent = now ? 'Status: changed since approval' : 'Status: approved, v1.0';
+    }
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
 }
 
-/* ---------------- 01 Quadrant ---------------- */
+/* ---------------- 01 The gap: scroll story ---------------- */
+
+function initGap() {
+  const card = $('[data-licence]');
+  const steps = $$('.gap__step');
+  if (!card || !steps.length) return;
+  const rows = $$('[data-row]', card);
+  const match = $$('.licence__match span', card);
+
+  const setStep = (step: number) => {
+    card.dataset.step = String(step);
+    rows.forEach((r) => r.classList.toggle('is-changed', Number(r.dataset.row) <= step));
+    const changes = Math.min(step, 4);
+    card.style.setProperty('--changes', String(changes));
+    match.forEach((m, i) => m.classList.toggle('is-off', i >= 4 - changes));
+    const final = step >= 5;
+    if (final && !card.classList.contains('is-final')) buzz([10, 40, 20]);
+    card.classList.toggle('is-final', final);
+    steps.forEach((s) => s.classList.toggle('is-active', Number(s.dataset.step) === step));
+  };
+  setStep(0);
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((en) => { if (en.isIntersecting) setStep(Number((en.target as HTMLElement).dataset.step)); });
+  }, { rootMargin: '-55% 0px -35% 0px' });
+  steps.forEach((s) => io.observe(s));
+}
+
+/* ---------------- 02 Quadrant ---------------- */
 
 let pillarTabs: TabsApi | null = null;
 
@@ -199,6 +236,17 @@ function initQuadrant() {
   });
   markSeen(pillarTabs.current());
 
+  // Draw the first pillar's illustrations when the cards come into view.
+  const firstPanel = $(`[data-panel="${pillarTabs.current()}"]`);
+  if (firstPanel) {
+    const once = new IntersectionObserver((entries) => {
+      if (!entries[0].isIntersecting) return;
+      once.disconnect();
+      replay($(`[data-panel="${pillarTabs!.current()}"]`), 'is-entering');
+    }, { threshold: 0.2 });
+    once.observe(firstPanel);
+  }
+
   $$<HTMLButtonElement>('[data-goto-pillar]').forEach((b) => b.addEventListener('click', () => {
     const id = b.dataset.gotoPillar!;
     pillarTabs!.select(id, true);
@@ -220,66 +268,95 @@ function goToQuestion(n: string) {
   });
 }
 
-/* ---------------- 02 Gate ---------------- */
+/* ---------------- 04 Gate ---------------- */
 
 function initGate() {
-  const gate = $('[data-gate]');
-  const list = $('[data-tabs="gate"]', gate ?? document);
-  if (!gate || !list) return;
-  const token = $('.gate__token', gate);
-  const posts = $$('[data-post]', gate);
-  const tabs = $$('[role="tab"]', list);
-
-  const paint = (index: number) => {
-    gate.style.setProperty('--stage', String(index));
-    posts.forEach((p, i) => p.classList.toggle('is-open', i <= index));
-    tabs.forEach((t, i) => t.classList.toggle('is-passed', i < index));
-  };
+  const list = $('[data-tabs="gate"]');
+  const map = $<SVGSVGElement>('[data-gmap]');
+  if (!list) return;
+  const boxes = map ? $$('[data-gbox]', map) : [];
+  const ids = $$('[role="tab"]', list).map((t) => t.dataset.id!);
 
   const api = initTabs(list, (id, index, user) => {
-    paint(index);
+    boxes.forEach((b, i) => b.classList.toggle('is-sel', i === index));
     if (!user) return;
-    replay(token, 'is-moving');
-    replay($(`[data-panel="${id}"]`, gate), 'is-entering');
+    replay($(`[data-panel="${id}"]`), 'is-entering');
     buzz(10);
   });
+  boxes[0]?.classList.add('is-sel');
+  $$<HTMLButtonElement>('[data-goto-stage]').forEach((b) => b.addEventListener('click', () => api.select(b.dataset.gotoStage!, true)));
 
-  $$<HTMLButtonElement>('[data-goto-stage]', gate).forEach((b) => b.addEventListener('click', () => {
-    api.select(b.dataset.gotoStage!, true);
-  }));
-
-  // Open the first gate and tick its list when the section scrolls into view.
-  const first = $('[data-panel="pilot"]', gate);
-  paint(-1);
-  const io = new IntersectionObserver((entries) => {
+  // Tick the first checklist when the gate first scrolls into view.
+  const first = $(`[data-panel="${ids[0]}"]`);
+  const once = new IntersectionObserver((entries) => {
     if (!entries[0].isIntersecting) return;
-    io.disconnect();
-    const index = tabs.findIndex((t) => t.getAttribute('aria-selected') === 'true');
-    paint(Math.max(0, index));
-    if (index <= 0) replay(first, 'is-entering');
-  }, { threshold: 0.35 });
-  io.observe(gate);
+    once.disconnect();
+    if (api.current() === ids[0]) replay(first, 'is-entering');
+  }, { threshold: 0.3 });
+  once.observe(list);
+
+  if (!map || !motionOK()) return;
+  initLicenceLoop(map);
 }
 
-/* ---------------- 03 Scorecard ---------------- */
+// The signature motion: a change hits the running system, its licence
+// expires, and it travels the loop back to Gate 2 to be re-approved.
+function initLicenceLoop(map: SVGSVGElement) {
+  const token = $<SVGAnimationElement>('[data-token]', map);
+  const label = $('[data-change-text]', map);
+  const kinds = ['MODEL', 'DATA', 'PERMISSIONS', 'USE'];
+  let k = 0, timers: number[] = [], loop = 0, visible = false;
+
+  const at = (ms: number, fn: () => void) => timers.push(window.setTimeout(fn, ms));
+  const cycle = () => {
+    if (label) label.textContent = `CHANGE: ${kinds[k++ % kinds.length]}`;
+    map.classList.add('is-change');
+    at(700, () => { map.classList.add('is-moving'); token?.beginElement(); });
+    at(2100, () => { map.classList.remove('is-moving'); map.classList.add('is-retest'); });
+    at(3600, () => map.classList.remove('is-change', 'is-retest'));
+  };
+  const start = () => {
+    if (loop) return;
+    cycle();
+    loop = window.setInterval(cycle, 5600);
+  };
+  const stop = () => {
+    window.clearInterval(loop);
+    loop = 0;
+    timers.forEach(window.clearTimeout);
+    timers = [];
+    map.classList.remove('is-change', 'is-retest', 'is-moving');
+  };
+  new IntersectionObserver((entries) => {
+    visible = entries[0].isIntersecting;
+    if (visible && !document.hidden) start(); else stop();
+  }, { threshold: 0.4 }).observe(map);
+  document.addEventListener('visibilitychange', () => { if (document.hidden) stop(); else if (visible) start(); });
+}
+
+/* ---------------- 05 Scorecard ---------------- */
 
 interface ScoreData {
   verdicts: { title: string; line: string }[];
-  items: { id: string; startWith: string[] }[];
+  blocked: { title: string; line: string };
+  items: { id: string; label: string; startWith: string[] }[];
   questions: Record<string, { q: string; pillar: string }>;
 }
+interface Stored { checked: string[]; critical: string[] }
 
-function readStore(): string[] {
+function readStore(): Stored {
+  const empty = { checked: [], critical: [] };
   try {
     const raw = localStorage.getItem(STORE_KEY);
-    const v = raw ? JSON.parse(raw) : [];
-    return Array.isArray(v) ? v.filter((x) => typeof x === 'string') : [];
+    const v = raw ? JSON.parse(raw) : null;
+    const clean = (a: unknown) => (Array.isArray(a) ? a.filter((x) => typeof x === 'string') : []);
+    return v && typeof v === 'object' ? { checked: clean(v.checked), critical: clean(v.critical) } : empty;
   } catch {
-    return [];
+    return empty;
   }
 }
-function writeStore(ids: string[]) {
-  try { localStorage.setItem(STORE_KEY, JSON.stringify(ids)); } catch { /* private mode, ignore */ }
+function writeStore(s: Stored) {
+  try { localStorage.setItem(STORE_KEY, JSON.stringify(s)); } catch { /* private mode, ignore */ }
 }
 
 function sharedScoreFromHash(): number | null {
@@ -288,6 +365,7 @@ function sharedScoreFromHash(): number | null {
 }
 
 let currentScore = 0;
+let currentBlocked = false;
 
 function initScorecard() {
   const root = $('[data-score]');
@@ -296,6 +374,7 @@ function initScorecard() {
   const data: ScoreData = JSON.parse(dataEl.textContent || '{}');
 
   const inputs = $$<HTMLInputElement>('[data-score-item]', root);
+  const crits = $$<HTMLButtonElement>('[data-critical]', root);
   const val = $('[data-score-val]', root);
   const sr = $('[data-score-sr]', root);
   const segs = $$('.score__seg', root);
@@ -304,32 +383,42 @@ function initScorecard() {
   const next = $('[data-start-with]', root);
   const nextLabel = $('[data-start-label]', root);
   const chips = $('[data-chips]', root);
-  const barScore = $('[data-bar-score]');
+  const barScores = $$('[data-bar-score]');
   const status = $('[data-status]', root);
 
-  const saved = new Set(readStore());
-  inputs.forEach((i) => { i.checked = saved.has(i.dataset.scoreItem!); });
+  const saved = readStore();
+  inputs.forEach((i) => { i.checked = saved.checked.includes(i.dataset.scoreItem!); });
+  crits.forEach((b) => b.setAttribute('aria-pressed', String(saved.critical.includes(b.dataset.critical!))));
 
   const render = (user: boolean) => {
     const checked = inputs.filter((i) => i.checked).map((i) => i.dataset.scoreItem!);
+    const critical = crits.filter((b) => b.getAttribute('aria-pressed') === 'true').map((b) => b.dataset.critical!);
+    const blocking = critical.filter((id) => !checked.includes(id));
     const score = checked.length;
     const prev = currentScore;
     currentScore = score;
+    currentBlocked = blocking.length > 0;
 
     if (val) val.textContent = String(score);
     if (user && score !== prev) replay(val, 'is-tick');
-    if (sr) sr.textContent = `Score ${score} out of 5.`;
-    if (barScore) barScore.textContent = `${score}/5`;
+    barScores.forEach((b) => { b.textContent = `${score}/5`; });
     segs.forEach((s, i) => s.classList.toggle('on', i < score));
-    const v = data.verdicts[score];
-    if (title) title.textContent = v.title;
-    if (line) line.textContent = v.line;
+    $$('[data-row]', root).forEach((r) => r.classList.toggle('is-blocking', blocking.includes(r.dataset.row!)));
 
-    // Questions to start with, from the items still missing.
-    const missing = data.items.filter((it) => !checked.includes(it.id));
-    const ns = [...new Set(missing.flatMap((it) => it.startWith))].sort().slice(0, score <= 2 ? 4 : 3);
+    const v = currentBlocked ? data.blocked : data.verdicts[score];
+    if (title) title.textContent = v.title;
+    if (line) {
+      const names = blocking.map((id) => data.items.find((it) => it.id === id)?.label).join(', ');
+      line.textContent = currentBlocked ? `${v.line} Missing: ${names}.` : v.line;
+    }
+    if (sr) sr.textContent = `Score ${score} out of 5.${currentBlocked ? ' Blocked by a critical control.' : ''}`;
+
+    // Questions to start with: blocking controls first, then the other gaps.
+    const missing = data.items.filter((it) => !checked.includes(it.id))
+      .sort((a, b) => Number(blocking.includes(b.id)) - Number(blocking.includes(a.id)));
+    const ns = [...new Set(missing.flatMap((it) => it.startWith))].slice(0, score <= 2 ? 4 : 3);
     if (next) next.hidden = score === 5;
-    if (nextLabel) nextLabel.textContent = score >= 4 ? 'Close the last gap with' : 'Start with these questions';
+    if (nextLabel) nextLabel.textContent = currentBlocked ? 'Unblock it with these questions' : score >= 4 ? 'Close the last gap with' : 'Start with these questions';
     if (chips) {
       chips.replaceChildren(...ns.map((n, k) => {
         const li = document.createElement('li');
@@ -348,23 +437,32 @@ function initScorecard() {
 
     const full = score === 5;
     const wasFull = root.classList.contains('is-full');
+    const wasBlocked = root.classList.contains('is-blocked');
     root.classList.toggle('is-full', full);
-    if (full && !wasFull && user) {
+    root.classList.toggle('is-blocked', currentBlocked);
+    if (user && ((full && !wasFull) || (currentBlocked && !wasBlocked))) {
       replay(root, 'is-stamping');
       buzz([12, 60, 30]);
     }
 
     // Keep the printable sheet in step.
-    $$('[data-print-item]').forEach((li) => li.classList.toggle('is-checked', checked.includes(li.dataset.printItem!)));
+    $$('[data-print-item]').forEach((li) => {
+      li.classList.toggle('is-checked', checked.includes(li.dataset.printItem!));
+      li.classList.toggle('is-critical', critical.includes(li.dataset.printItem!));
+    });
     const ps = $('[data-print-score]');
     if (ps) ps.textContent = `${score}/5`;
     const pv = $('[data-print-verdict]');
-    if (pv) pv.textContent = `${v.title}. ${v.line}`;
+    if (pv) pv.textContent = `${v.title}. ${line?.textContent ?? v.line}`;
 
-    if (user) writeStore(checked);
+    if (user) writeStore({ checked, critical });
   };
 
   inputs.forEach((i) => i.addEventListener('change', () => { render(true); buzz(6); }));
+  crits.forEach((b) => b.addEventListener('click', () => {
+    b.setAttribute('aria-pressed', String(b.getAttribute('aria-pressed') !== 'true'));
+    render(true);
+  }));
   root.addEventListener('click', (e) => {
     const chip = (e.target as Element).closest<HTMLAnchorElement>('a.chip');
     if (!chip) return;
@@ -374,6 +472,7 @@ function initScorecard() {
 
   $('[data-reset]', root)?.addEventListener('click', () => {
     inputs.forEach((i) => { i.checked = false; });
+    crits.forEach((b) => b.setAttribute('aria-pressed', 'false'));
     render(true);
     if (status) status.textContent = 'Scorecard cleared.';
   });
@@ -385,7 +484,7 @@ function initScorecard() {
   const banner = $('[data-shared-banner]');
   const sharedText = $('[data-shared-text]');
   if (shared !== null && banner && sharedText) {
-    sharedText.textContent = `A colleague’s board scored ${shared}/5 (${data.verdicts[shared].title.toLowerCase()}). How does yours compare?`;
+    sharedText.textContent = `A colleague’s board scored ${shared}/5. How does yours compare?`;
     banner.hidden = false;
     requestAnimationFrame(() => document.getElementById('scorecard')?.scrollIntoView({ block: 'start' }));
   }
@@ -417,14 +516,14 @@ function initShare() {
   $('[data-share]')?.addEventListener('click', () => {
     share({
       title: 'Before you sign off on AI',
-      text: `Our board scored ${currentScore}/5 on the AI sign off scorecard. Eight questions to ask before approving AI investment:`,
+      text: `Our board scored ${currentScore}/5 on the AI sign-off scorecard. Sign-off is a licence, not a verdict. Score yours:`,
       url: `${base}#score=${currentScore}`,
     }, status);
   });
   $$('[data-share-page]').forEach((b) => b.addEventListener('click', () => {
     share({
       title: 'Before you sign off on AI',
-      text: 'Eight questions every board should ask before approving AI investment.',
+      text: 'The AI you approved may not be the AI that’s running. Eight questions for boards:',
       url: base,
     }, status);
   }));
@@ -458,6 +557,7 @@ function initAnalytics() {
 initTopBar();
 initReveal();
 initHero();
+initGap();
 initQuadrant();
 initGate();
 initScorecard();

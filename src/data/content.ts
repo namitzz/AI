@@ -3,7 +3,7 @@
 
 export const author = {
   name: 'Namit Sarna',
-  course: 'MSc AI for Business Transformation (with Capgemini), Aston University',
+  course: 'MSc AI for Business Transformation, Aston University',
   linkedin: 'https://www.linkedin.com/in/namitsarna',
 };
 
@@ -17,17 +17,31 @@ export const event = {
 
 export const site = {
   title: 'Before you sign off on AI',
+  hook: 'The AI you approved may not be the AI that’s running.',
+  support: 'Eight questions for boards, and why sign-off is a licence, not a verdict.',
+  idea: 'Sign-off is a licence, not a verdict.',
   description:
-    'Eight questions every board should ask before approving AI investment. An interactive board checklist, investment gate and scorecard.',
+    'The AI you approved may not be the AI that’s running. Eight questions for boards, and why sign-off is a licence, not a verdict.',
 };
 
+// The drift story: what changes after approval.
+export const drift = [
+  { key: 'approved', label: 'Day one', title: 'The board approves a model.', body: 'It was tested, it passed, and the minutes say yes.' },
+  { key: 'model', label: 'Change 1', title: 'The vendor updates the model.', body: 'Hosted models can change after approval, often without a meeting.' },
+  { key: 'data', label: 'Change 2', title: 'It is fed new data.', body: 'New sources, new customers, new patterns it never saw in testing.' },
+  { key: 'permissions', label: 'Change 3', title: 'It is given new permissions.', body: 'It can now act, not just suggest.' },
+  { key: 'use', label: 'Change 4', title: 'It is used in new ways.', body: 'A team finds a new job for it. Nobody asks the board.' },
+];
+
 export type PillarId = 'value' | 'risk' | 'readiness' | 'accountability';
+export type Art = 'switch' | 'scales' | 'inject' | 'headline' | 'update' | 'manual' | 'clock' | 'stack';
 
 export interface Question {
   n: string;
   q: string;
   why: string;
   good: string;
+  art: Art;
 }
 
 export interface Pillar {
@@ -41,186 +55,189 @@ export const pillars: Pillar[] = [
   {
     id: 'value',
     name: 'Value',
-    tagline: 'Is it worth doing?',
+    tagline: 'Does it change a decision that matters?',
     questions: [
       {
         n: '01',
-        q: 'What problem, and what metric?',
-        why: 'AI without a business case turns into a science project that never ships.',
-        good: 'One named problem, a current baseline, a target, and a date to check it.',
+        q: 'What would we lose if we switched it off tomorrow?',
+        why: 'If nobody can answer, the AI isn’t changing a decision that matters yet.',
+        good: 'A named outcome with a baseline and target, and a clear answer to what breaks without it.',
+        art: 'switch',
       },
       {
         n: '02',
-        q: 'What does doing nothing cost?',
-        why: 'Boards should compare AI against the status quo, not against perfection.',
-        good: 'The cost of delay and the cost of failure are both estimated, in money and in risk.',
+        q: 'What does acting gain, and what does waiting cost?',
+        why: 'Boards should weigh AI against the status quo, not against perfection.',
+        good: 'The value of acting and the cost of delay are both estimated, in money and in risk.',
+        art: 'scales',
       },
     ],
   },
   {
     id: 'risk',
     name: 'Risk',
-    tagline: 'What could go wrong?',
+    tagline: 'Where are the red lines?',
     questions: [
       {
         n: '03',
-        q: 'Is it secure by design?',
-        why: 'AI widens the attack surface: prompt injection, data leakage and poisoned inputs.',
+        q: 'What happens when someone tries to make it misbehave?',
+        why: 'AI can be manipulated through its inputs: prompt injection, data leakage and poisoned data.',
         good: 'A threat model before build, adversarial testing before launch, and a security owner who signs off.',
+        art: 'inject',
       },
       {
         n: '04',
-        q: 'How much harm can we tolerate?',
-        why: 'Without an agreed risk appetite, every incident becomes a crisis.',
-        good: 'A written AI risk appetite, with the EU AI Act risk tier checked wherever it applies.',
+        q: 'Which failure would we never want to explain in public?',
+        why: 'Naming the unacceptable failure is how a board sets real limits.',
+        good: 'A written risk appetite with named red lines, set by the board, with the EU AI Act risk tier checked where it applies.',
+        art: 'headline',
       },
     ],
   },
   {
     id: 'readiness',
     name: 'Readiness',
-    tagline: 'Can we run it safely?',
+    tagline: 'Is it still the thing we approved?',
     questions: [
       {
         n: '05',
-        q: 'Is the data fit, owned and lawful?',
-        why: 'A model can only be as good as its data, and UK GDPR still applies.',
-        good: 'A named data owner, a recorded lawful basis, and quality and bias checks run.',
+        q: 'If the vendor updated the model last night, would we know?',
+        why: 'Hosted models can change after approval. The system you tested may not be the one running.',
+        good: 'Version pinning or change notices in vendor contracts, and re-testing triggered by any model change.',
+        art: 'update',
       },
       {
         n: '06',
-        q: 'Can we monitor and roll back?',
-        why: 'Models drift quietly after launch.',
-        good: 'Live performance monitoring, alert thresholds, and a tested fallback to the manual process.',
+        q: 'How fast can we go back to doing it by hand?',
+        why: 'Rollback only works if the manual process still exists and people still know it.',
+        good: 'A tested fallback, a rollback time the board has agreed, and monitoring that triggers it.',
+        art: 'manual',
       },
     ],
   },
   {
     id: 'accountability',
     name: 'Accountability',
-    tagline: 'Who answers for it?',
+    tagline: 'Can someone actually act?',
     questions: [
       {
         n: '07',
-        q: 'Who owns it when it fails?',
-        why: '“The algorithm did it” is not an answer a regulator or customer accepts.',
-        good: 'One accountable executive, plus clear ownership for building, running and reviewing it.',
+        q: 'Who can switch it off at 3am, and do they know it?',
+        why: 'Accountability on paper fails if the person can’t act when it matters.',
+        good: 'A named owner with the authority and the means to stop it, tested in a drill.',
+        art: 'clock',
       },
       {
         n: '08',
-        q: 'Is human override real?',
-        why: 'A reviewer with no context, no time or no authority is a rubber stamp.',
-        good: 'Reviewers can see why, have time to act, can say no, and every override is logged.',
+        q: 'Approving 200 AI outputs a day: is anyone still deciding?',
+        why: 'At high volume, human review drifts into rubber-stamping (automation bias).',
+        good: 'Review load sized so people can actually judge, with overrides logged and sampled.',
+        art: 'stack',
       },
     ],
   },
 ];
 
+export const pilotTrap = {
+  figure: '30%+',
+  tag: 'Predicted',
+  claim:
+    'Gartner forecast that at least 30% of generative AI projects would be abandoned after proof of concept by the end of 2025, due to poor data quality, inadequate risk controls, escalating costs or unclear business value.',
+  source: 'Gartner forecast, 29 July 2024',
+  caveat: 'A forecast, not a confirmed outcome.',
+  line: 'Getting AI live was the 2025 problem. Keeping it approved is the next one.',
+  reasons: ['Poor data quality', 'Inadequate risk controls', 'Escalating costs', 'Unclear business value'],
+};
+
 export interface Stage {
   id: string;
   name: string;
-  summary: string;
+  decision: string;
   checks: string[];
 }
+
+export const gateRule = 'If a critical control fails, do not progress.';
+export const gateNote = 'Critical controls come from each system’s risk assessment. A proposed rule, not a legal one.';
+export const loopLabel = 'Any change: re-approve';
+export const changeKinds = ['model', 'data', 'permissions', 'use'];
 
 export const stages: Stage[] = [
   {
     id: 'pilot',
     name: 'Pilot',
-    summary: 'Approve a small, time-boxed pilot.',
-    checks: [
-      'Use case and success metric agreed',
-      'Risk tier and threat model done',
-      'Data owner named',
-      'Budget capped, with an end date',
-    ],
+    decision: 'Approve test',
+    checks: ['Use case and baseline', 'Risk assessment and data owner', 'Measurable success criteria'],
   },
   {
     id: 'scale',
     name: 'Scale',
-    summary: 'Release funding to roll out.',
-    checks: [
-      'Pilot hit its metrics',
-      'Monitoring and alerts live',
-      'Human override tested in practice',
-      'Security review passed',
-    ],
+    decision: 'Approve rollout',
+    checks: ['Performance thresholds met', 'Failure scenarios tested', 'Monitoring and override verified'],
   },
   {
     id: 'run',
     name: 'Run',
-    summary: 'Keep it earning its place.',
-    checks: [
-      'Scheduled audit cycle',
-      'Incident log reviewed by a board committee',
-      'Drift and fairness re-tested',
-      'Clear criteria for switching it off',
-    ],
+    decision: 'Licence',
+    checks: ['Named owner and audit trail', 'Drift and incident monitoring', 'Expires on any change'],
   },
+];
+
+export const scoreInstruction = [
+  'Score 1 only where there is evidence the control is operating; otherwise score 0.',
+  'A missing critical control can block approval, whatever the total.',
+  'Controls apply in proportion to each system’s risk; the score is not a measure of legal compliance.',
 ];
 
 export interface ScoreItem {
   id: string;
   label: string;
   text: string;
-  // Questions from section 2 to start with when this item is missing.
+  // Questions from the 8 to start with when this control has no evidence.
   startWith: string[];
 }
 
 export const scoreItems: ScoreItem[] = [
-  { id: 'policy', label: 'Policy', text: 'AI policy approved at board level', startWith: ['04', '07'] },
-  { id: 'inventory', label: 'Inventory', text: 'A list of every AI tool in use, including unapproved ones', startWith: ['03', '05'] },
-  { id: 'owner', label: 'Owner', text: 'One named accountable executive', startWith: ['07', '08'] },
-  { id: 'appetite', label: 'Appetite', text: 'A written AI risk appetite, agreed', startWith: ['04', '02'] },
-  { id: 'assurance', label: 'Assurance', text: 'Independent assurance planned, such as ISO/IEC 42001', startWith: ['03', '06'] },
+  { id: 'policy', label: 'Policy', text: 'Board-approved AI governance policy', startWith: ['04', '01'] },
+  { id: 'inventory', label: 'Inventory', text: 'All AI identified, including shadow AI and agents', startWith: ['05', '03'] },
+  { id: 'owner', label: 'Owner', text: 'One accountable executive', startWith: ['07', '06'] },
+  { id: 'appetite', label: 'Appetite', text: 'Risk appetite and tolerances defined', startWith: ['04', '02'] },
+  { id: 'assurance', label: 'Assurance', text: 'Continuous assurance, not a one-off check', startWith: ['05', '08'] },
 ];
 
 export const verdicts: { title: string; line: string }[] = [
-  { title: 'Not ready to sign off', line: 'There is nothing yet to stand behind. Start with the questions below.' },
-  { title: 'Not ready to sign off', line: 'One foundation is in place. The board would be signing off on trust.' },
-  { title: 'Not yet', line: 'The gaps are bigger than the cover. Close them before you approve spend.' },
-  { title: 'Pilot only', line: 'Approve a capped, time-boxed pilot, with conditions on the missing pieces.' },
-  { title: 'Nearly ready', line: 'One gap left. Close it and you can sign off with a clear conscience.' },
-  { title: 'Ready to sign off, with confidence', line: 'All five foundations are in place. This board can say yes, and mean it.' },
+  { title: 'No evidence. No sign-off.', line: 'No control has evidence that it is operating. Start with the questions below.' },
+  { title: 'Not ready to sign off', line: 'One control is operating. The rest are still promises.' },
+  { title: 'Not yet', line: 'More gaps than evidence. Close them before any money moves.' },
+  { title: 'Test only', line: 'At most, approve a contained pilot, with conditions on what is missing.' },
+  { title: 'Nearly there', line: 'One control lacks evidence. Find it before rollout.' },
+  { title: 'Ready to license', line: 'Every control has evidence. Sign off, and name the changes that end the licence.' },
 ];
+export const blockedVerdict = {
+  title: 'Blocked',
+  line: 'A control you marked critical has no evidence. Whatever the total, do not progress.',
+};
 
 export interface Framework {
-  tag: string;
   name: string;
+  tag: string;
   line: string;
   href: string;
   motif: 'iso' | 'nist' | 'eu' | 'uk';
 }
 
 export const frameworks: Framework[] = [
-  {
-    tag: 'Standard',
-    name: 'ISO/IEC 42001',
-    line: 'The certifiable management system standard for AI. Proof you run AI with discipline.',
-    href: 'https://www.iso.org/standard/42001',
-    motif: 'iso',
-  },
-  {
-    tag: 'Framework',
-    name: 'NIST AI RMF',
-    line: 'Four functions for AI risk: Govern, Map, Measure, Manage.',
-    href: 'https://www.nist.gov/itl/ai-risk-management-framework',
-    motif: 'nist',
-  },
-  {
-    tag: 'Regulation',
-    name: 'EU AI Act',
-    line: 'Risk tiers set the rules. Applies to UK firms selling or deploying AI into the EU.',
-    href: 'https://eur-lex.europa.eu/eli/reg/2024/1689/oj',
-    motif: 'eu',
-  },
-  {
-    tag: 'Principles',
-    name: 'UK AI principles',
-    line: 'Safety, transparency, fairness, accountability and contestability, applied by existing regulators.',
-    href: 'https://www.gov.uk/government/publications/ai-regulation-a-pro-innovation-approach',
-    motif: 'uk',
-  },
+  { name: 'ISO/IEC 42001', tag: 'Standard', line: 'Certifiable AI management system standard.', href: 'https://www.iso.org/standard/42001', motif: 'iso' },
+  { name: 'NIST AI RMF', tag: 'Voluntary', line: 'Voluntary framework: Govern, Map, Measure, Manage.', href: 'https://www.nist.gov/itl/ai-risk-management-framework', motif: 'nist' },
+  { name: 'EU AI Act', tag: 'Law', line: 'Binding EU law, organised by risk tier.', href: 'https://eur-lex.europa.eu/eli/reg/2024/1689/oj', motif: 'eu' },
+  { name: 'UK AI principles', tag: 'Principles', line: 'Applied by existing regulators.', href: 'https://www.gov.uk/government/publications/ai-regulation-a-pro-innovation-approach', motif: 'uk' },
 ];
+
+export const toolkit = {
+  name: 'UK AI Risk Management Toolkit',
+  line: 'Published by DSIT on 8 September 2026 for public sector teams.',
+  href: 'https://www.gov.uk/government/publications/ai-risk-management-toolkit',
+};
+
+export const disclaimer = 'A practical framework, not a compliance guarantee.';
 
 export const allQuestions = pillars.flatMap((p) => p.questions.map((q) => ({ ...q, pillar: p.id, pillarName: p.name })));

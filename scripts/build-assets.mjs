@@ -91,7 +91,7 @@ function ogSvg(host) {
   <rect x="64" y="369" width="388" height="10" fill="${C.accent}"/>
   <g transform="translate(796 128) scale(0.98)">${shieldGroup(C)}</g>
   <rect x="0" y="548" width="1200" height="82" fill="${C.ink}"/>
-  <text x="64" y="598" font-family="IBM Plex Sans" font-weight="500" font-size="28" fill="${C.paper}">8 questions every board should ask before approving AI investment</text>
+  <text x="64" y="598" font-family="IBM Plex Sans" font-weight="500" font-size="28" fill="${C.paper}">The AI you approved may not be the AI that’s running.</text>
 </svg>`;
 }
 

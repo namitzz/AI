@@ -2,11 +2,11 @@
 import Icon from './Icon.astro';
 
 const links = [
-  { href: '#questions', label: 'Questions', n: '01' },
-  { href: '#gate', label: 'Gate', n: '02' },
-  { href: '#scorecard', label: 'Scorecard', n: '03' },
-  { href: '#built-on', label: 'Built on', n: '04' },
-  { href: '#connect', label: 'Connect', n: '05' },
+  { href: '#gap', label: 'The gap', n: '01' },
+  { href: '#questions', label: 'Questions', n: '02' },
+  { href: '#gate', label: 'Gate', n: '04' },
+  { href: '#scorecard', label: 'Score yours', n: '05' },
+  { href: '#built-on', label: 'Sources', n: '06' },
 ];
 ---
 <a class="skip" href="#main">Skip to content</a>
@@ -29,7 +29,7 @@ const links = [
     </nav>
 
     <div class="topbar__actions">
-      <a class="btn btn--accent btn--sm topbar__cta" href="#scorecard">Score <span data-bar-score>0/5</span></a>
+      <a class="btn btn--accent btn--sm topbar__cta" href="#scorecard">Score yours <span class="topbar__score" data-bar-score>0/5</span></a>
       <button class="iconbtn topbar__menu" type="button" aria-expanded="false" aria-controls="menu" data-menu-toggle>
         <span class="visually-hidden" data-menu-label>Open menu</span>
         <Icon name="menu" class="i-open" />

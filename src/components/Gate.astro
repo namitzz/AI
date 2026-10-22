@@ -1,85 +1,129 @@
 ---
 import SectionHead from './SectionHead.astro';
 import Icon from './Icon.astro';
-import { stages } from '../data/content';
+import { stages, gateRule, gateNote, loopLabel, site } from '../data/content';
+
+const boxY = [16, 212, 408];
+const loop = 'M274 476 C344 476 344 280 274 280';
 ---
-<section class="section section--surface" id="gate" aria-labelledby="gate-title">
+<section class="section" id="gate" aria-labelledby="gate-title">
   <div class="wrap">
-    <SectionHead n="02" label="The investment gate" id="gate-title">
-      <Fragment slot="title">Fund it in<br /><span class="accent">three gates.</span></Fragment>
-      <p>Money moves in stages, not in one cheque. Each gate opens only when its checklist is complete.</p>
+    <SectionHead n="04" label="The investment gate" id="gate-title">
+      <Fragment slot="title">Three gates.<br /><span class="accent">One licence.</span></Fragment>
+      <p>Money moves in stages. The last gate is not a finish line: it grants a licence that ends the moment the system changes.</p>
     </SectionHead>
 
-    <div class="gate" data-gate style="--stage:0" data-reveal>
-      <div class="gate__track" aria-hidden="true">
-        <span class="gate__line"></span>
-        <span class="gate__done"></span>
-        {stages.map((_, i) => (
-          <span class="gate__post" style={`--i:${i}`} data-post={i}>
-            <span class="gate__bar gate__bar--top"></span>
-            <span class="gate__bar gate__bar--bot"></span>
-          </span>
-        ))}
-        <span class="gate__token"></span>
+    <div class="rule" data-reveal>
+      <svg class="rule__icon" viewBox="0 0 48 48" aria-hidden="true">
+        <path d="M16 3 H32 L45 16 V32 L32 45 H16 L3 32 V16 Z" />
+        <path class="rule__bar" d="M14 24 H34" />
+      </svg>
+      <div>
+        <p class="rule__text">{gateRule}</p>
+        <p class="rule__note">{gateNote}</p>
       </div>
+    </div>
 
-      <div class="gate__tabs" role="tablist" aria-label="Investment stages" data-tabs="gate">
-        {stages.map((s, i) => (
-          <button
-            class="gate__tab"
-            type="button"
-            role="tab"
-            id={`gtab-${s.id}`}
-            aria-controls={`gpanel-${s.id}`}
-            aria-selected={i === 0 ? 'true' : 'false'}
-            tabindex={i === 0 ? '0' : '-1'}
-            data-id={s.id}
-          >
-            <span class="gate__step label">Gate {i + 1}</span>
-            <span class="gate__name">{s.name}</span>
-          </button>
-        ))}
-      </div>
+    <div class="gate2">
+      <figure class="gate2__fig" data-reveal>
+        <svg class="gmap" viewBox="0 0 360 560" aria-hidden="true" data-gmap>
+          <defs>
+            <path id="gloop-text" d="M274 502 C374 502 374 254 274 254" />
+          </defs>
 
-      {stages.map((s, i) => (
-        <div
-          class="gate__panel"
-          role="tabpanel"
-          id={`gpanel-${s.id}`}
-          aria-labelledby={`gtab-${s.id}`}
-          tabindex="0"
-          hidden={i !== 0}
-          data-panel={s.id}
-        >
-          <p class="gate__verb label">Board decision {i + 1} of 3</p>
-          <h3 class="gate__summary">{s.summary}</h3>
-          <ul class="gate__checks" aria-label={`${s.name} checklist`}>
-            {s.checks.map((c, j) => (
-              <li style={`--j:${j}`}>
-                <span class="gate__tick" aria-hidden="true">
-                  <svg viewBox="0 0 24 24"><path d="M5 12.5 L10 17.5 L19 7" pathLength="1" /></svg>
-                </span>
-                <span>{c}</span>
-              </li>
-            ))}
-          </ul>
-          <p class="gate__rule">
-            <span class="label">Gate rule</span>
-            All four in place before {i === 0 ? 'any money moves' : i === 1 ? 'the roll out is funded' : 'it renews for another year'}.
-          </p>
-          {i < stages.length - 1 ? (
-            <button class="btn btn--ink" type="button" data-goto-stage={stages[i + 1].id}>
-              Gate cleared. Go to {stages[i + 1].name}
-              <Icon name="arrow" />
+          <path class="gmap__conn" d="M64 152 V204 M56 196 L64 204 L72 196 M64 348 V400 M56 392 L64 400 L72 392" />
+
+          {stages.map((s, i) => (
+            <g class:list={['gmap__box', i === 2 && 'gmap__box--run']} data-gbox={i}>
+              <rect class="gmap__rect" x="24" y={boxY[i]} width="250" height="136" />
+              <text class="gmap__mono" x="44" y={boxY[i] + 34}>GATE {i + 1} · {s.decision.toUpperCase()}</text>
+              <text class="gmap__name" x="42" y={boxY[i] + 104}>{s.name.toUpperCase()}</text>
+            </g>
+          ))}
+
+          <g class="gmap__retest">
+            <rect x="280" y="214" width="76" height="28" />
+            <text x="318" y="233" text-anchor="middle">RE-TEST</text>
+          </g>
+
+          <g class="gmap__badge">
+            <rect x="178" y="482" width="84" height="28" />
+            <text class="gmap__valid" x="220" y="501" text-anchor="middle">VALID</text>
+            <text class="gmap__expired" x="220" y="501" text-anchor="middle">EXPIRED</text>
+          </g>
+
+          <g class="gmap__change">
+            <rect x="122" y="360" width="148" height="30" />
+            <text x="196" y="380" text-anchor="middle" data-change-text>CHANGE: MODEL</text>
+          </g>
+
+          <path class="gmap__loop" d={loop} />
+          <path class="gmap__loopflow" d={loop} />
+          <path class="gmap__head" d="M288 270 L274 280 L288 290" />
+          <text class="gmap__looptext"><textPath href="#gloop-text" startOffset="50%" text-anchor="middle">{loopLabel.toUpperCase()}</textPath></text>
+
+          <rect class="gmap__token" x="-8" y="-8" width="16" height="16">
+            <animateMotion dur="1.4s" begin="indefinite" fill="freeze" path={loop} data-token />
+          </rect>
+        </svg>
+        <figcaption class="gate2__cap">
+          <span class="label">Any change means model, data, permissions or use</span>
+          <span class="gate2__idea display">{site.idea}</span>
+        </figcaption>
+      </figure>
+
+      <div class="gate2__detail">
+        <div class="gate__tabs" role="tablist" aria-label="Investment gates" data-tabs="gate">
+          {stages.map((s, i) => (
+            <button
+              class:list={['gate__tab', i === 2 && 'gate__tab--run']}
+              type="button"
+              role="tab"
+              id={`gtab-${s.id}`}
+              aria-controls={`gpanel-${s.id}`}
+              aria-selected={i === 0 ? 'true' : 'false'}
+              tabindex={i === 0 ? '0' : '-1'}
+              data-id={s.id}
+            >
+              <span class="gate__step label">Gate {i + 1}</span>
+              <span class="gate__name">{s.name}</span>
             </button>
-          ) : (
-            <a class="btn btn--ink" href="#scorecard">
-              Now score your board
-              <Icon name="arrow" />
-            </a>
-          )}
+          ))}
         </div>
-      ))}
+
+        {stages.map((s, i) => (
+          <div
+            class="gate__panel"
+            role="tabpanel"
+            id={`gpanel-${s.id}`}
+            aria-labelledby={`gtab-${s.id}`}
+            tabindex="0"
+            hidden={i !== 0}
+            data-panel={s.id}
+          >
+            <p class="gate__verb label">Gate {i + 1} of 3</p>
+            <h3 class="gate__summary">{s.decision}</h3>
+            <ul class="gate__checks" aria-label={`${s.name} checklist`}>
+              {s.checks.map((c, j) => (
+                <li style={`--j:${j}`}>
+                  <span class="gate__tick" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path d="M5 12.5 L10 17.5 L19 7" pathLength="1" /></svg>
+                  </span>
+                  <span>{c}</span>
+                </li>
+              ))}
+            </ul>
+            {i < stages.length - 1 ? (
+              <button class="btn btn--ink" type="button" data-goto-stage={stages[i + 1].id}>
+                All in place. Go to {stages[i + 1].name}
+                <Icon name="arrow" />
+              </button>
+            ) : (
+              <p class="gate__licence">The licence holds only while the system is the one you approved. Any change sends it back to Gate 2.</p>
+            )}
+          </div>
+        ))}
+      </div>
     </div>
   </div>
 </section>
