@@ -32,14 +32,14 @@ All copy lives in `src/data/content.ts`.
 
 ## Live site
 
-GitHub Pages: **https://namitzz.github.io/ai/** (poster QR code: https://namitzz.github.io/ai/s/)
+GitHub Pages: **https://namitzz.github.io/AI/** (poster QR code: https://namitzz.github.io/AI/s/)
 
 `.github/workflows/pages.yml` builds and publishes the site on every push to `main`.
 One-time setup: repo **Settings → Pages → Build and deployment → Source: GitHub Actions**.
 
 ## Change the live URL
 
-The address is set in `site.config.mjs`. By default builds target GitHub Pages under `/ai`; builds on Vercel (which sets `VERCEL=1`) target `https://boardsignoff.vercel.app` at the root and turn on Vercel Web Analytics. Override with `SITE_URL` and `BASE_PATH`, then regenerate the images:
+The address is set in `site.config.mjs`. By default builds target GitHub Pages under `/AI`; builds on Vercel (which sets `VERCEL=1`) target `https://boardsignoff.vercel.app` at the root and turn on Vercel Web Analytics. Override with `SITE_URL` and `BASE_PATH`, then regenerate the images:
 
 ```bash
 npm run assets   # writes public/og.png, favicons and poster-assets/qr-*
