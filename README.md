@@ -30,27 +30,28 @@ npm run preview
 
 All copy lives in `src/data/content.ts`.
 
+## Live site
+
+GitHub Pages: **https://namitzz.github.io/ai/** (poster QR code: https://namitzz.github.io/ai/s/)
+
+`.github/workflows/pages.yml` builds and publishes the site on every push to `main`.
+One-time setup: repo **Settings → Pages → Build and deployment → Source: GitHub Actions**.
+
 ## Change the live URL
 
-The site address is set in one place, `site.config.mjs` (default `https://boardsignoff.vercel.app`). If your Vercel URL ends up different:
+The address is set in `site.config.mjs`. By default builds target GitHub Pages under `/ai`; builds on Vercel (which sets `VERCEL=1`) target `https://boardsignoff.vercel.app` at the root and turn on Vercel Web Analytics. Override with `SITE_URL` and `BASE_PATH`, then regenerate the images:
 
 ```bash
-SITE_URL=https://your-project.vercel.app npm run assets
+npm run assets   # writes public/og.png, favicons and poster-assets/qr-*
 ```
 
-Then change the default in `site.config.mjs` to match, and commit. This regenerates `public/og.png`, the favicons and the QR codes in `poster-assets/`.
+## Deploy to Vercel instead (optional)
 
-## Deploy to Vercel
-
-1. Push this repo to GitHub.
-2. Go to [vercel.com/new](https://vercel.com/new), import the repository.
-3. Project name: `boardsignoff` (gives `boardsignoff.vercel.app`). Framework preset: **Astro** (auto-detected). Leave build settings as they are.
-4. Click **Deploy**.
-5. In the project, open **Analytics** and click **Enable** (Web Analytics). Redeploy once so the script is served.
-6. Open the live URL on your phone and scan the QR code in `poster-assets/` to check it lands.
-
-If `boardsignoff` is taken, use `board-signoff` or `signoff-ai`, then follow "Change the live URL" above.
+1. Go to [vercel.com/new](https://vercel.com/new) and import this repository.
+2. Project name: `boardsignoff`. Framework preset: **Astro**. Deploy.
+3. In the project, open **Analytics** and click **Enable**, then redeploy.
+4. Run `VERCEL=1 npm run assets`, commit, and use the new QR codes, which open `https://boardsignoff.vercel.app/s/`.
 
 ## The QR code
 
-`poster-assets/qr-ink.png` / `.svg` (recommended) and `qr-cobalt.*`. They open `/s`, which Vercel rewrites to the home page (see `vercel.json`). That way the **Pages** panel in Vercel Analytics shows `/s` as poster scans, separate from other visits. Error correction H, 4 module quiet zone. Print at 25 mm or larger.
+`poster-assets/qr-ink.png` / `.svg` (recommended) and `qr-cobalt.*`. They open `/s/`, a copy of the home page whose canonical link points at `/`, so poster scans can be counted separately. Error correction H, 4 module quiet zone. Print at 25 mm or larger.

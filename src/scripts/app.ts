@@ -512,7 +512,7 @@ async function share(payload: ShareData, status: HTMLElement | null) {
 
 function initShare() {
   const status = $('[data-status]');
-  const base = `${location.origin}/`;
+  const base = $<HTMLLinkElement>('link[rel="canonical"]')?.href || `${location.origin}/`;
   $('[data-share]')?.addEventListener('click', () => {
     share({
       title: 'Before you sign off on AI',
@@ -544,8 +544,8 @@ function initHashLinks() {
 /* ---------------- Analytics (Vercel Web Analytics, cookieless) ---------------- */
 
 function initAnalytics() {
-  const host = location.hostname;
-  if (host === 'localhost' || host === '127.0.0.1' || host === '') return;
+  // Only Vercel builds serve the analytics script.
+  if (document.documentElement.dataset.analytics !== 'vercel') return;
   const w = window as unknown as { va?: (...a: unknown[]) => void; vaq?: unknown[] };
   w.va = w.va || function (...args: unknown[]) { (w.vaq = w.vaq || []).push(args); };
   const s = document.createElement('script');

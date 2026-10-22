@@ -2,11 +2,11 @@
 // Hidden on screen. The print stylesheet shows only this, as one A4 page.
 import QRCode from 'qrcode';
 import { pillars, scoreItems, stages, author, event, site, gateRule, gateNote, loopLabel, scoreInstruction, disclaimer } from '../data/content';
-import { QR_PATH } from '../../site.config.mjs';
+import { QR_URL, PAGE_URL } from '../../site.config.mjs';
 
-const url = new URL(QR_PATH, Astro.site).href;
+const url = QR_URL;
 const qr = await QRCode.toString(url, { type: 'svg', errorCorrectionLevel: 'H', margin: 2, color: { dark: '#10141A', light: '#FFFFFF' } });
-const displayUrl = new URL('/', Astro.site).host;
+const displayUrl = PAGE_URL.replace(/^https?:\/\//, '').replace(/\/$/, '');
 ---
 <div class="ps" aria-hidden="true">
   <header class="ps__head">

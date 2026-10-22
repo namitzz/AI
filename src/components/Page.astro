@@ -1,0 +1,34 @@
+---
+// The whole page. Rendered at / and at /s/ (the poster QR code target).
+import Base from '../layouts/Base.astro';
+import TopBar from './TopBar.astro';
+import Hero from './Hero.astro';
+import Gap from './Gap.astro';
+import Quadrant from './Quadrant.astro';
+import PilotTrap from './PilotTrap.astro';
+import Gate from './Gate.astro';
+import Scorecard from './Scorecard.astro';
+import BuiltOn from './BuiltOn.astro';
+import Closer from './Closer.astro';
+import PrintSheet from './PrintSheet.astro';
+---
+<Base>
+  <div class="site">
+    <TopBar />
+    <main id="main">
+      <Hero />
+      <Gap />
+      <Quadrant />
+      <PilotTrap />
+      <Gate />
+      <Scorecard />
+      <BuiltOn />
+      <Closer />
+    </main>
+  </div>
+  <PrintSheet />
+  <noscript><style>.q-panel[hidden], .gate__panel[hidden] { display: block !important; } .quad__progress, .score__actions, .q-next, .gate__panel .btn, .crit, .score__crit-hint { display: none !important; }</style></noscript>
+  <script>
+    import '../scripts/app.ts';
+  </script>
+</Base>

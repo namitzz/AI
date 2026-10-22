@@ -1,10 +1,10 @@
 // Generates the static image assets: social preview, favicons and poster QR codes.
-// Run with `npm run assets` (set SITE_URL=... first if the live address changes).
+// Run with `npm run assets` after changing the live address in site.config.mjs.
 import { mkdir, writeFile, access } from 'node:fs/promises';
 import { join } from 'node:path';
 import { Resvg } from '@resvg/resvg-js';
 import QRCode from 'qrcode';
-import { SITE_URL, QR_PATH } from '../site.config.mjs';
+import { PAGE_URL, QR_URL } from '../site.config.mjs';
 
 const root = new URL('..', import.meta.url).pathname;
 const pub = join(root, 'public');
@@ -98,7 +98,7 @@ function ogSvg(host) {
 async function main() {
   const fontFiles = await ensureFonts();
   await mkdir(out, { recursive: true });
-  const host = new URL(SITE_URL).host;
+  const host = PAGE_URL.replace(/^https?:\/\//, '').replace(/\/$/, '');
 
   await writeFile(join(pub, 'favicon.svg'), faviconAdaptive);
   await writeFile(join(pub, 'favicon-32.png'), render(faviconSvg(), 32));
@@ -106,7 +106,7 @@ async function main() {
   await writeFile(join(pub, 'og.png'), render(ogSvg(host), 1200, fontFiles));
 
   // Poster QR codes: high error correction, 4 module quiet zone.
-  const qrUrl = `${SITE_URL}${QR_PATH}`;
+  const qrUrl = QR_URL;
   const qrOpts = { errorCorrectionLevel: 'H', margin: 4 };
   for (const [name, dark] of [['ink', C.ink], ['cobalt', C.accent]]) {
     const color = { dark, light: '#FFFFFF' };
