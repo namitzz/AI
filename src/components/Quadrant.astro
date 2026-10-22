@@ -2,9 +2,12 @@
 import SectionHead from './SectionHead.astro';
 import Icon from './Icon.astro';
 import QArt from './QArt.astro';
+
+// Questions that have a hands-on experiment in the lab.
+const tryIt: Record<string, string> = { '03': 'inject', '05': 'drift', '07': 'drill', '08': 'stamp' };
 import { pillars } from '../data/content';
 ---
-<section class="section" id="questions" aria-labelledby="questions-title">
+<section class="section section--surface" id="questions" aria-labelledby="questions-title">
   <div class="wrap">
     <SectionHead n="02" label="The 8 questions" id="questions-title">
       <Fragment slot="title">Four pillars.<br /><span class="accent">Eight questions.</span></Fragment>
@@ -88,6 +91,17 @@ import { pillars } from '../data/content';
                       <dd>{q.good}</dd>
                     </div>
                   </dl>
+                  <div class="q-card__actions">
+                    {tryIt[q.n] && (
+                      <button class="btn btn--accent btn--sm" type="button" data-open-lab={tryIt[q.n]} aria-haspopup="dialog">
+                        Try it in 30 seconds
+                      </button>
+                    )}
+                    <button class="btn btn--ghost btn--sm" type="button" data-share-q={q.n} data-share-text={q.q}>
+                      <Icon name="share" />
+                      Share<span class="visually-hidden"> question {q.n}</span>
+                    </button>
+                  </div>
                 </article>
               ))}
             </div>

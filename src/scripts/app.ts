@@ -151,13 +151,17 @@ function initHero() {
 
   let setDrift: ((d: number) => void) | null = null;
   if (canvas) {
-    import('./shield3d').then(({ mountShield3D }) => {
+    // Let the SVG mark finish drawing itself, then hand over to the 3D shield
+    // once the browser is idle, so startup never competes with page load.
+    const mount = () => import('./shield3d').then(({ mountShield3D }) => {
       const api = mountShield3D(canvas);
       if (!api) { startPackets(); return; }
       art.classList.add('is-3d');
       setDrift = api.setDrift;
       onScroll();
     }).catch(startPackets);
+    const idle = (fn: () => void) => ('requestIdleCallback' in window ? window.requestIdleCallback(fn, { timeout: 2000 }) : window.setTimeout(fn, 200));
+    window.addEventListener('load', () => window.setTimeout(() => idle(mount), 2200), { once: true });
   } else {
     startPackets();
   }
@@ -493,7 +497,13 @@ function initScorecard() {
 /* ---------------- Share and print ---------------- */
 
 async function share(payload: ShareData, status: HTMLElement | null) {
-  const say = (msg: string) => { if (status) status.textContent = msg; };
+  const say = (msg: string) => {
+    if (status) status.textContent = msg;
+    const t = $('[data-toast]');
+    if (!t) return;
+    t.textContent = msg;
+    replay(t, 'is-on');
+  };
   if (navigator.share) {
     try {
       await navigator.share(payload);
@@ -541,6 +551,50 @@ function initHashLinks() {
   handle();
 }
 
+/* ---------------- The 60-second lab ---------------- */
+
+function initLab() {
+  document.addEventListener('click', (e) => {
+    const btn = (e.target as Element).closest<HTMLElement>('[data-open-lab]');
+    if (!btn) return;
+    e.preventDefault();
+    import('./lab').then((m) => m.openLab(btn.dataset.openLab!));
+  });
+}
+
+/* ---------------- Share a single question ---------------- */
+
+function initQuestionShare() {
+  const base = document.documentElement.dataset.base || '/';
+  document.addEventListener('click', (e) => {
+    const btn = (e.target as Element).closest<HTMLElement>('[data-share-q]');
+    if (!btn) return;
+    const n = btn.dataset.shareQ!;
+    // /q/NN/ carries a preview image for that question, then forwards to the card.
+    const url = new URL(`${base}q/${n}/`, location.href).href;
+    share({ title: `Question ${n}: ${btn.dataset.shareText}`, text: `Question ${n} every board should ask before signing off on AI: ${btn.dataset.shareText}`, url }, null);
+  });
+}
+
+/* ---------------- Event day banner ---------------- */
+
+function initToday() {
+  const el = $('[data-today]');
+  if (!el) return;
+  const london = new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/London', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date());
+  el.hidden = london !== '2026-11-04';
+}
+
+/* ---------------- Offline: cache the page for poor venue signal ---------------- */
+
+function initOffline() {
+  if (!('serviceWorker' in navigator) || location.protocol !== 'https:') return;
+  const base = document.documentElement.dataset.base || '/';
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register(`${base}sw.js`, { scope: base }).catch(() => { /* offline support is optional */ });
+  });
+}
+
 /* ---------------- Analytics (Vercel Web Analytics, cookieless) ---------------- */
 
 function initAnalytics() {
@@ -562,5 +616,9 @@ initQuadrant();
 initGate();
 initScorecard();
 initShare();
+initLab();
+initQuestionShare();
+initToday();
+initOffline();
 initHashLinks();
 initAnalytics();

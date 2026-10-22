@@ -1,0 +1,55 @@
+---
+// Stand mode: run this full screen on a laptop at the poster. It cycles the
+// big ideas next to the 3D shield and a large QR code.
+import QRCode from 'qrcode';
+import Base from '../../layouts/Base.astro';
+import ShieldMark from '../../components/ShieldMark.astro';
+import { allQuestions, site, event, author } from '../../data/content';
+import { QR_URL, PAGE_URL } from '../../../site.config.mjs';
+
+const qr = await QRCode.toString(QR_URL, { type: 'svg', errorCorrectionLevel: 'H', margin: 2, color: { dark: '#10141A', light: '#FFFFFF' } });
+const slides = [
+  { kicker: 'Before you sign off on AI', text: site.hook, drift: true },
+  { kicker: 'The idea', text: site.idea },
+  ...allQuestions.map((q) => ({ kicker: `Question ${q.n} · ${q.pillarName}`, text: q.q })),
+  { kicker: 'The rule', text: 'No evidence. No sign-off.' },
+];
+const shortUrl = PAGE_URL.replace(/^https?:\/\//, '').replace(/\/$/, '');
+---
+<Base title={`Stand mode | ${site.title}`} noindex>
+  <main class="stand" data-stand>
+    <div class="stand__left">
+      <p class="eyebrow"><span class="tag">{event.dateShort}</span><span>{event.venue}</span></p>
+      <div class="stand__slides">
+        {slides.map((s, i) => (
+          <div class="stand__slide" data-slide={i} data-drift={s.drift ? '1' : undefined} hidden={i !== 0}>
+            <p class="label stand__kicker">{s.kicker}</p>
+            <p class="stand__text display">{s.text}</p>
+          </div>
+        ))}
+      </div>
+      <div class="stand__dots" aria-hidden="true">
+        {slides.map((_, i) => <span data-dot={i}></span>)}
+      </div>
+    </div>
+
+    <figure class="stand__art hero__art" data-hero-art>
+      <ShieldMark variant="hero" />
+      <canvas class="hero__canvas" aria-hidden="true" data-shield3d></canvas>
+    </figure>
+
+    <aside class="stand__qr">
+      <Fragment set:html={qr} />
+      <div>
+        <p class="stand__scan display">Scan.<br /><span class="accent">Score your board.</span></p>
+        <p class="stand__url">{shortUrl}</p>
+        <p class="label">30 seconds · nothing leaves your phone · {author.name}</p>
+      </div>
+    </aside>
+
+    <button class="btn btn--ghost btn--sm stand__fs" type="button" data-fullscreen>Full screen</button>
+  </main>
+  <script>
+    import '../../scripts/stand.ts';
+  </script>
+</Base>

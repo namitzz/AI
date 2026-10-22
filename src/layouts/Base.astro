@@ -3,11 +3,13 @@ import '../styles/site.css';
 import { site, author, event } from '../data/content';
 import { PAGE_URL, BASE_PATH, ANALYTICS } from '../../site.config.mjs';
 
+interface Props { title?: string; noindex?: boolean }
+const { title, noindex = false } = Astro.props;
 const canonical = PAGE_URL;
 const ogImage = `${PAGE_URL}og.png`;
 const fonts =
   'https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75,800..900&family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap';
-const fullTitle = `${site.title}: 8 questions for the board | ${author.name}`;
+const fullTitle = title ?? `${site.title}: 8 questions for the board | ${author.name}`;
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -29,7 +31,7 @@ const jsonLd = {
 };
 ---
 <!doctype html>
-<html lang="en-GB" data-analytics={ANALYTICS || undefined}>
+<html lang="en-GB" data-analytics={ANALYTICS || undefined} data-base={`${BASE_PATH}/`}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
@@ -37,6 +39,7 @@ const jsonLd = {
     <title>{fullTitle}</title>
     <meta name="description" content={site.description} />
     <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex" />}
     <meta name="author" content={author.name} />
     <meta name="color-scheme" content="light dark" />
     <meta name="theme-color" content="#F1F0EC" media="(prefers-color-scheme: light)" />

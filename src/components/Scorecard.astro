@@ -1,6 +1,7 @@
 ---
 import SectionHead from './SectionHead.astro';
 import Icon from './Icon.astro';
+import { BASE_PATH } from '../../site.config.mjs';
 import { scoreItems, verdicts, blockedVerdict, allQuestions, scoreInstruction } from '../data/content';
 
 // Shipped to the browser so the script can build verdicts and suggestions.
@@ -13,7 +14,7 @@ const data = {
 ---
 <section class="section section--surface" id="scorecard" aria-labelledby="score-title">
   <div class="wrap">
-    <SectionHead n="05" label="Board scorecard" id="score-title">
+    <SectionHead n="06" label="Board scorecard" id="score-title">
       <Fragment slot="title">Score yours.<br /><span class="accent">Evidence only.</span></Fragment>
       <p>Five controls. Tick one only if you could show the evidence tomorrow. Your answers stay on this device.</p>
     </SectionHead>
@@ -84,9 +85,13 @@ const data = {
           <Icon name="share" />
           Share my score
         </button>
+        <a class="btn btn--ghost" href={`${BASE_PATH}/board-checklist.pdf`} download>
+          <Icon name="print" />
+          Download the board checklist (PDF)
+        </a>
         <button class="btn btn--ghost" type="button" data-print>
           <Icon name="print" />
-          Download the one-page board checklist
+          Print it with my answers
         </button>
         <button class="btn btn--text" type="button" data-reset>
           <Icon name="reset" />
@@ -94,7 +99,7 @@ const data = {
         </button>
       </div>
       <p class="score__status" role="status" aria-live="polite" data-status></p>
-      <p class="score__hint">The checklist opens your print dialog. Choose Save as PDF to keep a copy.</p>
+      <p class="score__hint">The PDF is a blank one-page checklist. “Print it with my answers” fills in your ticks; choose Save as PDF in the print dialog to keep a copy.</p>
     </div>
   </div>
   <script type="application/json" id="score-data" set:html={JSON.stringify(data)} />

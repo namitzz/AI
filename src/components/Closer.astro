@@ -1,10 +1,11 @@
 ---
 import Icon from './Icon.astro';
 import { author, event } from '../data/content';
+import { BASE_PATH } from '../../site.config.mjs';
 ---
 <section class="closer" id="connect" aria-labelledby="closer-title">
   <div class="wrap">
-    <p class="eyebrow"><span class="tag">07</span><span>The rule</span></p>
+    <p class="eyebrow"><span class="tag">08</span><span>The rule</span></p>
     <h2 class="display closer__title" id="closer-title" data-closer>
       <span class="line" style="--l:0">No evidence.</span>
       <span class="line accent" style="--l:1">No sign-off.</span>
@@ -32,10 +33,14 @@ import { author, event } from '../data/content';
       </p>
 
       <div class="closer__more">
-        <button class="btn btn--onaccent" type="button" data-print>
+        <a class="btn btn--onaccent" href={`${BASE_PATH}/namit-sarna.vcf`} download>
+          <Icon name="accountability" />
+          Save my contact
+        </a>
+        <a class="btn btn--onaccent" href={`${BASE_PATH}/board-checklist.pdf`} download>
           <Icon name="print" />
-          Download the board checklist
-        </button>
+          Board checklist (PDF)
+        </a>
         <button class="btn btn--onaccent" type="button" data-share-page>
           <Icon name="share" />
           Share this page

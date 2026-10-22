@@ -1,0 +1,42 @@
+---
+// One page per question, so a shared link shows that question in the preview
+// card. People who open it are sent straight to the question on the main page.
+import { allQuestions, site } from '../../data/content';
+import { PAGE_URL, BASE_PATH } from '../../../site.config.mjs';
+
+export function getStaticPaths() {
+  return allQuestions.map((q) => ({ params: { n: q.n }, props: { q } }));
+}
+const { q } = Astro.props;
+const target = `${PAGE_URL}#q-${q.n}`;
+const title = `Question ${q.n}: ${q.q}`;
+const image = `${PAGE_URL}og/q${q.n}.png`;
+---
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title} | {site.title}</title>
+    <meta name="description" content={`${q.why} What good looks like: ${q.good}`} />
+    <link rel="canonical" href={target} />
+    <meta name="robots" content="noindex" />
+    <link rel="icon" href={`${BASE_PATH}/favicon.svg`} type="image/svg+xml" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={`${q.why} ${site.idea}`} />
+    <meta property="og:url" content={`${PAGE_URL}q/${q.n}/`} />
+    <meta property="og:image" content={image} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:image" content={image} />
+    <script is:inline define:vars={{ target }}>location.replace(target);</script>
+    <style>body{font:18px/1.5 system-ui,sans-serif;background:#F1F0EC;color:#10141A;padding:24px}a{color:#2541E6}</style>
+  </head>
+  <body>
+    <p>Question {q.n}: {q.q}</p>
+    <p><a href={target}>Open the question</a></p>
+  </body>
+</html>

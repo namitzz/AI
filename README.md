@@ -16,6 +16,13 @@ Central idea: **sign-off is a licence, not a verdict.** The AI a board approved 
 - **Board scorecard**: evidence-only scoring, controls can be marked critical (a missing critical control blocks approval), "Licensed" or "Blocked" stamps, saved on the device, shareable as `/#score=N`.
 - **Informed by**: ISO/IEC 42001, NIST AI RMF, EU AI Act, UK AI principles, plus the UK AI Risk Management Toolkit.
 - **One-page A4 board checklist** via the print stylesheet, including the visitor's scorecard and critical flags.
+- **The 60-second lab**: five quick experiments, loaded on first use. Rubber stamp test (Q08), the 3am drill (Q07), spot the injection (Q03), the drift dial (Q05), and an AI licence certificate the visitor fills in and saves or shares as an image, made entirely on their phone.
+- **Share a question**: every question card has a Share button. `/q/01/` to `/q/08/` carry a preview image for that question and forward to the card.
+- **Board checklist**: a blank one-page PDF (`public/board-checklist.pdf`) to download, plus "Print it with my answers", which fills in the visitor's scorecard.
+- **Save my contact**: `public/namit-sarna.vcf` adds Namit to the phone's contacts.
+- **Works offline**: a service worker (`public/sw.js`) keeps the page available on weak venue signal.
+- **Event day banner**: only shows on 4 November 2026 (London time).
+- **Stand mode**: `/stand/` is a full-screen page for a laptop at the poster: the 3D shield, the questions cycling, and a large QR code. Press F for full screen, arrow keys to step. It keeps the screen awake where the browser allows.
 
 Stack: [Astro](https://astro.build) static output, vanilla TypeScript (about 5 kB gzipped, plus the 3 kB WebGL shield loaded after first paint). All graphics are inline SVG or WebGL; the only images are generated PNGs for social sharing and icons.
 
@@ -51,6 +58,16 @@ npm run assets   # writes public/og.png, favicons and poster-assets/qr-*
 2. Project name: `boardsignoff`. Framework preset: **Astro**. Deploy.
 3. In the project, open **Analytics** and click **Enable**, then redeploy.
 4. Run `VERCEL=1 npm run assets`, commit, and use the new QR codes, which open `https://boardsignoff.vercel.app/s/`.
+
+## Regenerate the PDF
+
+After changing the questions or scorecard, rebuild the blank checklist:
+
+```bash
+npm run build && npm run preview          # keep running
+npm i --no-save playwright && npx playwright install chromium
+node scripts/build-pdf.mjs                # writes public/board-checklist.pdf
+```
 
 ## The QR code
 

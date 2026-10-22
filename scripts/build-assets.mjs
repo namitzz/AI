@@ -5,6 +5,7 @@ import { join } from 'node:path';
 import { Resvg } from '@resvg/resvg-js';
 import QRCode from 'qrcode';
 import { PAGE_URL, QR_URL } from '../site.config.mjs';
+import { allQuestions } from '../src/data/content.ts';
 
 const root = new URL('..', import.meta.url).pathname;
 const pub = join(root, 'public');
@@ -95,6 +96,40 @@ function ogSvg(host) {
 </svg>`;
 }
 
+// Share card for one question: number, pillar and the question in big type.
+const xmlEsc = (t) => t.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/’/g, "'");
+function wrapWords(text, max) {
+  const lines = [];
+  let line = '';
+  for (const w of text.split(/\s+/)) {
+    const t = line ? `${line} ${w}` : w;
+    if (t.length > max && line) { lines.push(line); line = w; } else line = t;
+  }
+  lines.push(line);
+  return lines;
+}
+function ogQuestionSvg(q, host) {
+  const display = `font-family="Archivo Condensed" font-weight="800"`;
+  const mono = `font-family="IBM Plex Mono SemiBold"`;
+  let size = 84, lines = wrapWords(q.q.toUpperCase(), 24);
+  if (lines.length > 3) { size = 70; lines = wrapWords(q.q.toUpperCase(), 29); }
+  const top = 300 - ((lines.length - 1) * size * 0.95) / 2 + size * 0.3;
+  const tag = `QUESTION ${q.n} · ${q.pillarName.toUpperCase()}`;
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="${C.paper}"/>
+  <rect x="64" y="58" width="${34 + tag.length * 14.4}" height="40" fill="${C.ink}"/>
+  <text x="80" y="85" ${mono} font-size="20" letter-spacing="2.4" fill="${C.paper}">${tag}</text>
+  <text x="1136" y="85" ${mono} font-size="20" letter-spacing="2" fill="${C.ink}" text-anchor="end">FOR BOARDS</text>
+  <text x="1150" y="540" ${display} font-size="430" fill="${C.accent}" opacity="0.1" text-anchor="end">${q.n}</text>
+  <g ${display} font-size="${size}" fill="${C.ink}">
+    ${lines.map((l, i) => `<text x="64" y="${top + i * size * 0.95}">${xmlEsc(l)}</text>`).join('')}
+  </g>
+  <rect x="0" y="548" width="1200" height="82" fill="${C.ink}"/>
+  <text x="64" y="598" ${display} font-size="34" fill="${C.paper}">BEFORE YOU SIGN OFF ON AI</text>
+  <text x="1136" y="598" ${mono} font-size="20" letter-spacing="2" fill="${C.paper}" text-anchor="end">${host.toUpperCase()}</text>
+</svg>`;
+}
+
 async function main() {
   const fontFiles = await ensureFonts();
   await mkdir(out, { recursive: true });
@@ -104,6 +139,8 @@ async function main() {
   await writeFile(join(pub, 'favicon-32.png'), render(faviconSvg(), 32));
   await writeFile(join(pub, 'apple-touch-icon.png'), render(appleIconSvg(), 180));
   await writeFile(join(pub, 'og.png'), render(ogSvg(host), 1200, fontFiles));
+  await mkdir(join(pub, 'og'), { recursive: true });
+  for (const q of allQuestions) await writeFile(join(pub, 'og', `q${q.n}.png`), render(ogQuestionSvg(q, host), 1200, fontFiles));
 
   // Poster QR codes: high error correction, 4 module quiet zone.
   const qrUrl = QR_URL;

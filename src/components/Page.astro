@@ -5,6 +5,7 @@ import TopBar from './TopBar.astro';
 import Hero from './Hero.astro';
 import Gap from './Gap.astro';
 import Quadrant from './Quadrant.astro';
+import Lab from './Lab.astro';
 import PilotTrap from './PilotTrap.astro';
 import Gate from './Gate.astro';
 import Scorecard from './Scorecard.astro';
@@ -16,9 +17,14 @@ import PrintSheet from './PrintSheet.astro';
   <div class="site">
     <TopBar />
     <main id="main">
+      <p class="today" hidden data-today>
+        <span class="today__dot" aria-hidden="true"></span>
+        <span>Today at IET London: Namit is at the poster session. Come and argue with the questions.</span>
+      </p>
       <Hero />
       <Gap />
       <Quadrant />
+      <Lab />
       <PilotTrap />
       <Gate />
       <Scorecard />
@@ -26,8 +32,9 @@ import PrintSheet from './PrintSheet.astro';
       <Closer />
     </main>
   </div>
+  <p class="toast" role="status" aria-live="polite" data-toast></p>
   <PrintSheet />
-  <noscript><style>.q-panel[hidden], .gate__panel[hidden] { display: block !important; } .quad__progress, .score__actions, .q-next, .gate__panel .btn, .crit, .score__crit-hint { display: none !important; }</style></noscript>
+  <noscript><style>.q-panel[hidden], .gate__panel[hidden] { display: block !important; } .quad__progress, .score__actions, .q-next, .gate__panel .btn, .crit, .score__crit-hint, #lab, .q-card__actions, [data-print] { display: none !important; }</style></noscript>
   <script>
     import '../scripts/app.ts';
   </script>
