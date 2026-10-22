@@ -304,7 +304,7 @@ function initGate() {
 }
 
 // The signature motion: a change hits the running system, its licence
-// expires, and it travels the loop back to Gate 2 to be re-approved.
+// expires, and it travels the loop back to Gate 2 to be reassessed.
 function initLicenceLoop(map: SVGSVGElement) {
   const token = $<SVGAnimationElement>('[data-token]', map);
   const label = $('[data-change-text]', map);
@@ -579,10 +579,14 @@ function initQuestionShare() {
 /* ---------------- Event day banner ---------------- */
 
 function initToday() {
-  const el = $('[data-today]');
-  if (!el) return;
   const london = new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/London', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date());
-  el.hidden = london !== '2026-11-04';
+  const el = $('[data-today]');
+  if (el) el.hidden = london !== '2026-11-04';
+  // After the event, the hero's event line switches to the past tense.
+  if (london > '2026-11-04') {
+    $$('[data-before-event]').forEach((n) => { n.hidden = true; });
+    $$('[data-after-event]').forEach((n) => { n.hidden = false; });
+  }
 }
 
 /* ---------------- Offline: cache the page for poor venue signal ---------------- */

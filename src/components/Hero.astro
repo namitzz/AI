@@ -1,7 +1,7 @@
 ---
 import ShieldMark from './ShieldMark.astro';
 import Icon from './Icon.astro';
-import { event, site } from '../data/content';
+import { event, site, author } from '../data/content';
 ---
 <section class="hero" id="top" aria-labelledby="hero-title">
   <div class="hero__grid wrap">
@@ -41,8 +41,7 @@ import { event, site } from '../data/content';
     </figure>
 
     <p class="hero__event">
-      <span class="label">At</span>
-      {event.name}. {event.hosts}, {event.venue}, {event.date}.
+      A companion to {author.name}’s poster, <span data-before-event>being presented</span><span data-after-event hidden>presented</span> at {event.name} ({event.hosts}), {event.venue}, on {event.date}.
     </p>
   </div>
 </section>
@@ -51,7 +50,7 @@ import { event, site } from '../data/content';
   <div class="ticker__track">
     {[0, 1].map(() => (
       <span class="ticker__set">
-        {['Sign-off is a licence', 'not a verdict', 'No evidence', 'No sign-off', 'Any change: re-approve'].map((t) => (
+        {['Sign-off is a licence', 'not a verdict', 'No evidence', 'No sign-off', 'Material change: reassess'].map((t) => (
           <>
             <span>{t}</span>
             <svg viewBox="0 0 32 32"><path d="M16 2.5 L27 6.5 V15.5 C27 22 22.5 26.8 16 29.5 C9.5 26.8 5 22 5 15.5 V6.5 Z" /></svg>

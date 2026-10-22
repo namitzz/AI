@@ -119,7 +119,7 @@ function stamp(root: HTMLElement): Cleanup {
         <p class="lx-kicker label">${missed.length ? 'Rubber-stamped' : 'Result'}</p>
         <p class="lx-big">${head}</p>
         <p class="lx-text">${sub} Two of the twelve were wrong: ${traps.map((t) => esc(t.it.why!)).join(', and ')}.</p>
-        <p class="lx-text">At high volume, human review drifts into rubber-stamping. It is called automation bias, and it is a design problem, not a people problem.</p>
+        <p class="lx-text">At high volume, human review can drift into rubber-stamping. This is known as automation bias, which is why review workloads need to leave people time to judge.</p>
         ${lesson('08', 'Approving 200 AI outputs a day: is anyone still deciding?', 'Review load sized so people can actually judge, with overrides logged and sampled.')}
         <button class="btn btn--text lx-again" type="button">Try again</button>
       </div>`));
@@ -286,7 +286,7 @@ function drift(root: HTMLElement): Cleanup {
     <label class="lx-switch">
       <input type="checkbox" role="switch" data-re />
       <span class="lx-switch__ui" aria-hidden="true"></span>
-      <span>Re-approve on every change</span>
+      <span>Reassess each material change</span>
     </label>
     <div class="lx-card">
       <p class="label lx-card__head">AI system licence · Customer assist</p>
@@ -315,7 +315,7 @@ function drift(root: HTMLElement): Cleanup {
       const changed = m >= r.at;
       row.classList.toggle('is-changed', changed);
       row.classList.toggle('is-ok', changed && re.checked);
-      row.querySelector('.lx-row__tag')!.textContent = changed ? (re.checked ? `Re-approved, month ${r.at}` : 'Not reviewed') : '';
+      row.querySelector('.lx-row__tag')!.textContent = changed ? (re.checked ? `Reassessed, month ${r.at}` : 'Not reviewed') : '';
       if (changed && !re.checked) unreviewed++;
     });
     const match = 4 - unreviewed;
@@ -324,7 +324,7 @@ function drift(root: HTMLElement): Cleanup {
     root.querySelector('.lx-match')!.classList.toggle('is-bad', match < 4);
     const v = root.querySelector('.lx-verdict')!;
     if (m < 3) v.textContent = 'Day one. The system matches what the board approved.';
-    else if (re.checked) v.textContent = 'Every change triggered a re-test and a fresh sign-off. The licence still holds.';
+    else if (re.checked) v.textContent = 'Each material change was reassessed. The approval still reflects the system that is running.';
     else v.textContent = unreviewed === 4
       ? 'Same name, same contract, different system. Nobody signed off on this one.'
       : `${unreviewed} change${unreviewed > 1 ? 's' : ''} since approval, none reviewed. The licence has quietly expired.`;
@@ -348,7 +348,7 @@ function licence(root: HTMLElement): Cleanup {
       <select name="tier"><option>Minimal</option><option selected>Limited</option><option>High</option><option>Not yet assessed</option></select>
     </label>
     <fieldset class="lx-field">
-      <legend class="label">The licence ends if any of these change</legend>
+      <legend class="label">Review again after a material change to</legend>
       ${['The model', 'The data', 'Its permissions', 'How it is used'].map((c) => `<label class="lx-tick"><input type="checkbox" name="cond" value="${c}" checked /><span>${c}</span></label>`).join('')}
     </fieldset>
     <label class="lx-field"><span class="label">Next review</span>
@@ -463,7 +463,7 @@ async function drawLicence(d: { name: string; owner: string; tier: string; conds
   // Conditions
   x.fillStyle = C.ink; x.fillRect(100, y, W - 200, 2);
   x.font = `850 46px ${DISPLAY}`;
-  x.fillText('VALID UNTIL ANY OF THESE CHANGE', 100, y + 66, W - 200);
+  x.fillText('REVIEW AGAIN AFTER A MATERIAL CHANGE TO', 100, y + 66, W - 200);
   y += 104;
   const listTop = y;
   (d.conds.length ? d.conds : ['No conditions set']).forEach((cond) => {

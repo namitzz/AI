@@ -1,6 +1,6 @@
 ---
 import Icon from './Icon.astro';
-import { author, event } from '../data/content';
+import { author, event, disclaimer } from '../data/content';
 import { BASE_PATH } from '../../site.config.mjs';
 ---
 <section class="closer" id="connect" aria-labelledby="closer-title">
@@ -52,7 +52,7 @@ import { BASE_PATH } from '../../site.config.mjs';
 
 <footer class="footer">
   <div class="wrap footer__inner">
-    <p>Made for {event.name}, {event.hosts}, {event.venue}, {event.date}.</p>
-    <p>A practical framework, not a compliance guarantee. No cookies; visits are counted anonymously. Your scorecard stays on your device.</p>
+    <p>A companion to a poster at {event.name} ({event.hosts}), {event.venue}, {event.date}.</p>
+    <p>{disclaimer} No cookies or tracking. Your scorecard stays on your device.</p>
   </div>
 </footer>

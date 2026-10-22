@@ -142,9 +142,9 @@ export const pilotTrap = {
   figure: '30%+',
   tag: 'Predicted',
   claim:
-    'Gartner forecast that at least 30% of generative AI projects would be abandoned after proof of concept by the end of 2025, due to poor data quality, inadequate risk controls, escalating costs or unclear business value.',
-  source: 'Gartner forecast, 29 July 2024',
-  caveat: 'A forecast, not a confirmed outcome.',
+    'In July 2024, Gartner predicted that at least 30% of generative AI projects would be abandoned after proof of concept by the end of 2025, citing poor data quality, inadequate risk controls, escalating costs or unclear business value.',
+  source: 'Gartner press release, 29 July 2024',
+  caveat: 'A prediction about the end of 2025, not a measured abandonment rate.',
   line: 'Getting AI live was the 2025 problem. Keeping it approved is the next one.',
   reasons: ['Poor data quality', 'Inadequate risk controls', 'Escalating costs', 'Unclear business value'],
 };
@@ -157,8 +157,8 @@ export interface Stage {
 }
 
 export const gateRule = 'If a critical control fails, do not progress.';
-export const gateNote = 'Critical controls come from each system’s risk assessment. A proposed rule, not a legal one.';
-export const loopLabel = 'Any change: re-approve';
+export const gateNote = 'An illustrative way to think about staged approval, not a validated method. Which controls are critical depends on each system’s risk assessment.';
+export const loopLabel = 'Material change: reassess';
 export const changeKinds = ['model', 'data', 'permissions', 'use'];
 
 export const stages: Stage[] = [
@@ -178,14 +178,14 @@ export const stages: Stage[] = [
     id: 'run',
     name: 'Run',
     decision: 'Licence',
-    checks: ['Named owner and audit trail', 'Drift and incident monitoring', 'Expires on any change'],
+    checks: ['Named owner and audit trail', 'Drift and incident monitoring', 'Reassessed after any material change'],
   },
 ];
 
 export const scoreInstruction = [
   'Score 1 only where there is evidence the control is operating; otherwise score 0.',
   'A missing critical control can block approval, whatever the total.',
-  'Controls apply in proportion to each system’s risk; the score is not a measure of legal compliance.',
+  'This is a discussion aid, not a measure of governance maturity or legal compliance. Controls apply in proportion to each system’s risk.',
 ];
 
 export interface ScoreItem {
@@ -207,14 +207,14 @@ export const scoreItems: ScoreItem[] = [
 export const verdicts: { title: string; line: string }[] = [
   { title: 'No evidence. No sign-off.', line: 'No control has evidence that it is operating. Start with the questions below.' },
   { title: 'Not ready to sign off', line: 'One control is operating. The rest are still promises.' },
-  { title: 'Not yet', line: 'More gaps than evidence. Close them before any money moves.' },
-  { title: 'Test only', line: 'At most, approve a contained pilot, with conditions on what is missing.' },
+  { title: 'Not yet', line: 'More gaps than evidence. Worth closing them before committing significant spend.' },
+  { title: 'Test only', line: 'A contained pilot may be reasonable, with conditions on what is missing.' },
   { title: 'Nearly there', line: 'One control lacks evidence. Find it before rollout.' },
-  { title: 'Ready to license', line: 'Every control has evidence. Sign off, and name the changes that end the licence.' },
+  { title: 'Ready to license', line: 'Every control has evidence: a good basis for sign-off. Agree which material changes would trigger a fresh review.' },
 ];
 export const blockedVerdict = {
   title: 'Blocked',
-  line: 'A control you marked critical has no evidence. Whatever the total, do not progress.',
+  line: 'A control you marked critical has no evidence. In this exercise, that blocks approval whatever the total.',
 };
 
 export interface Framework {
@@ -226,18 +226,18 @@ export interface Framework {
 }
 
 export const frameworks: Framework[] = [
-  { name: 'ISO/IEC 42001', tag: 'Standard', line: 'Certifiable AI management system standard.', href: 'https://www.iso.org/standard/42001', motif: 'iso' },
-  { name: 'NIST AI RMF', tag: 'Voluntary', line: 'Voluntary framework: Govern, Map, Measure, Manage.', href: 'https://www.nist.gov/itl/ai-risk-management-framework', motif: 'nist' },
-  { name: 'EU AI Act', tag: 'Law', line: 'Binding EU law, organised by risk tier.', href: 'https://eur-lex.europa.eu/eli/reg/2024/1689/oj', motif: 'eu' },
-  { name: 'UK AI principles', tag: 'Principles', line: 'Applied by existing regulators.', href: 'https://www.gov.uk/government/publications/ai-regulation-a-pro-innovation-approach', motif: 'uk' },
+  { name: 'ISO/IEC 42001', tag: 'International standard', line: 'Standard for an AI management system. Organisations can be certified against it.', href: 'https://www.iso.org/standard/42001', motif: 'iso' },
+  { name: 'NIST AI RMF', tag: 'Voluntary framework', line: 'Voluntary US framework built around four functions: Govern, Map, Measure, Manage.', href: 'https://www.nist.gov/itl/ai-risk-management-framework', motif: 'nist' },
+  { name: 'EU AI Act', tag: 'Law', line: 'Binding EU regulation (2024/1689) with risk-based obligations that apply in phases.', href: 'https://eur-lex.europa.eu/eli/reg/2024/1689/oj', motif: 'eu' },
+  { name: 'UK AI principles', tag: 'Government principles', line: 'Five non-statutory principles, applied by existing regulators within their remits.', href: 'https://www.gov.uk/government/publications/ai-regulation-a-pro-innovation-approach', motif: 'uk' },
 ];
 
 export const toolkit = {
-  name: 'UK AI Risk Management Toolkit',
-  line: 'Published by DSIT on 8 September 2026 for public sector teams.',
+  name: 'UK AI Risk Management Toolkit (DSIT guidance)',
+  line: 'Practical guidance for managing AI risks, published on 8 September 2026. Guidance, not a mandatory legal standard.',
   href: 'https://www.gov.uk/government/publications/ai-risk-management-toolkit',
 };
 
-export const disclaimer = 'A practical framework, not a compliance guarantee.';
+export const disclaimer = 'An awareness resource for discussion, not legal or compliance advice.';
 
 export const allQuestions = pillars.flatMap((p) => p.questions.map((q) => ({ ...q, pillar: p.id, pillarName: p.name })));
