@@ -302,7 +302,7 @@ function drift(root: HTMLElement): Cleanup {
       </div>
     </div>
     <p class="lx-text lx-verdict" role="status" aria-live="polite"></p>
-    ${lesson('05', 'If the vendor updated the model last night, would we know?', 'Version pinning or change notices in vendor contracts, and re-testing triggered by any model change.')}
+    ${lesson('05', 'If the vendor updated the model last night, would we know?', 'Version pinning or change notices in vendor contracts. Re-testing triggered by material model changes, with routine updates handled through normal change control.')}
   </div>`));
   const range = root.querySelector<HTMLInputElement>('[data-range]')!;
   const re = root.querySelector<HTMLInputElement>('[data-re]')!;

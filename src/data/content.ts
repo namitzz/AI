@@ -103,7 +103,7 @@ export const pillars: Pillar[] = [
         n: '05',
         q: 'If the vendor updated the model last night, would we know?',
         why: 'Hosted models can change after approval. The system you tested may not be the one running.',
-        good: 'Version pinning or change notices in vendor contracts, and re-testing triggered by any model change.',
+        good: 'Version pinning or change notices in vendor contracts. Re-testing triggered by material model changes, with routine updates handled through normal change control.',
         art: 'update',
       },
       {

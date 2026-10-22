@@ -584,8 +584,7 @@ function initToday() {
   if (el) el.hidden = london !== '2026-11-04';
   // After the event, the hero's event line switches to the past tense.
   if (london > '2026-11-04') {
-    $$('[data-before-event]').forEach((n) => { n.hidden = true; });
-    $$('[data-after-event]').forEach((n) => { n.hidden = false; });
+    $$('[data-event-tense]').forEach((n) => { n.textContent = 'presented'; });
   }
 }
 
