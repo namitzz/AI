@@ -110,7 +110,7 @@ export const pillars: Pillar[] = [
         n: '06',
         q: 'How fast can we go back to doing it by hand?',
         why: 'Rollback only works if the manual process still exists and people still know it.',
-        good: 'A tested fallback, a rollback time the board has agreed, and monitoring that triggers it.',
+        good: 'A tested fallback procedure, a named person with authority to invoke it, and a recorded drill or recovery test. A manual fallback only counts if it can actually operate in practice.',
         art: 'manual',
       },
     ],
@@ -184,14 +184,16 @@ export const stages: Stage[] = [
 
 export const scoreInstruction = [
   'Score 1 only where there is evidence the control is operating; otherwise score 0.',
-  'A missing critical control can block approval, whatever the total.',
-  'This is a discussion aid, not a measure of governance maturity or legal compliance. Controls apply in proportion to each system’s risk.',
+  'Mark a control as critical only where this system’s risk assessment requires it. A critical control without evidence blocks approval, whatever the total.',
+  'The score counts controls with evidence of operation. It is not a safety, maturity or compliance rating, a full score does not mean automatic approval, and it does not replace a system-specific risk assessment.',
 ];
 
 export interface ScoreItem {
   id: string;
   label: string;
   text: string;
+  // Examples of evidence, where a control needs them spelled out.
+  evidence?: string;
   // Questions from the 8 to start with when this control has no evidence.
   startWith: string[];
 }
@@ -201,7 +203,7 @@ export const scoreItems: ScoreItem[] = [
   { id: 'inventory', label: 'Inventory', text: 'All AI identified, including shadow AI and agents', startWith: ['05', '03'] },
   { id: 'owner', label: 'Owner', text: 'One accountable executive', startWith: ['07', '06'] },
   { id: 'appetite', label: 'Appetite', text: 'Risk appetite and tolerances defined', startWith: ['04', '02'] },
-  { id: 'assurance', label: 'Assurance', text: 'Continuous assurance, not a one-off check', startWith: ['05', '08'] },
+  { id: 'assurance', label: 'Assurance', text: 'Continuous assurance, not a one-off check', evidence: 'For example: production monitoring against performance thresholds, drift checks, incident records and documented corrective actions.', startWith: ['05', '08'] },
 ];
 
 export const verdicts: { title: string; line: string }[] = [
@@ -210,7 +212,7 @@ export const verdicts: { title: string; line: string }[] = [
   { title: 'Not yet', line: 'More gaps than evidence. Worth closing them before committing significant spend.' },
   { title: 'Test only', line: 'A contained pilot may be reasonable, with conditions on what is missing.' },
   { title: 'Nearly there', line: 'One control lacks evidence. Find it before rollout.' },
-  { title: 'Ready to license', line: 'Every control has evidence: a good basis for sign-off. Agree which material changes would trigger a fresh review.' },
+  { title: 'All five evidenced', line: 'Each control has evidence of operation. That supports a sign-off discussion but is not an approval in itself. Agree which material changes would trigger a fresh review.' },
 ];
 export const blockedVerdict = {
   title: 'Blocked',

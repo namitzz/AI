@@ -349,7 +349,7 @@ function licence(root: HTMLElement): Cleanup {
     </label>
     <fieldset class="lx-field">
       <legend class="label">Review again after a material change to</legend>
-      ${['The model', 'The data', 'Its permissions', 'How it is used'].map((c) => `<label class="lx-tick"><input type="checkbox" name="cond" value="${c}" checked /><span>${c}</span></label>`).join('')}
+      ${['The model', 'The data', 'Its permissions', 'Its connected tools', 'How it is used'].map((c) => `<label class="lx-tick"><input type="checkbox" name="cond" value="${c}" checked /><span>${c}</span></label>`).join('')}
     </fieldset>
     <label class="lx-field"><span class="label">Next review</span>
       <select name="review"><option value="3">In 3 months</option><option value="6" selected>In 6 months</option><option value="12">In 12 months</option></select>
@@ -471,7 +471,7 @@ async function drawLicence(d: { name: string; owner: string; tier: string; conds
     x.strokeStyle = C.white; x.lineWidth = 5;
     x.stroke(new Path2D(`M106 ${y + 15} L113 ${y + 22} L125 ${y + 8}`));
     x.fillStyle = C.ink; x.font = `500 36px ${BODY}`; x.fillText(cond, 150, y + 27, 400);
-    y += 54;
+    y += 46;
   });
 
   // Stamp, beside the conditions list

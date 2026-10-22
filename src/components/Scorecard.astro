@@ -43,8 +43,8 @@ const data = {
           <p class="score__line" data-verdict-line>{verdicts[0].line}</p>
         </div>
         <div class="stamp stamp--ok" aria-hidden="true">
-          <span>Licensed</span>
-          <small>Until it changes</small>
+          <span>Evidenced</span>
+          <small>Not an approval</small>
         </div>
         <div class="stamp stamp--block" aria-hidden="true">
           <span>Blocked</span>
@@ -54,6 +54,7 @@ const data = {
 
       <fieldset class="score__list">
         <legend class="score__legend">Is there evidence each control is operating?</legend>
+        <p class="score__crit-hint">No control is critical by default. Use “Mark as critical” only for controls this system’s risk assessment says must be in place.</p>
         {scoreItems.map((item) => (
           <div class="check-row" data-row={item.id}>
             <label class="check">
@@ -64,16 +65,16 @@ const data = {
               <span class="check__text">
                 <span class="check__key label">{item.label}</span>
                 <span class="check__desc">{item.text}</span>
+                {item.evidence && <span class="check__ev">{item.evidence}</span>}
               </span>
             </label>
             <button class="crit" type="button" aria-pressed="false" data-critical={item.id}>
               <span class="crit__box" aria-hidden="true"></span>
-              <span>Critical<span class="visually-hidden">: {item.label}</span></span>
+              <span>Mark as critical<span class="visually-hidden">: {item.label}</span></span>
             </button>
           </div>
         ))}
       </fieldset>
-      <p class="score__crit-hint">Mark a control critical if this system’s risk assessment says it must be in place. A critical control without evidence blocks approval.</p>
 
       <div class="score__next" data-start-with>
         <p class="label" data-start-label>Start with these questions</p>

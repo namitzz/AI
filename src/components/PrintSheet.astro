@@ -42,7 +42,7 @@ const displayUrl = PAGE_URL.replace(/^https?:\/\//, '').replace(/\/$/, '');
       <p class="ps__small">{scoreInstruction.join(' ')}</p>
       <ul>
         {scoreItems.map((s) => (
-          <li data-print-item={s.id}><span class="ps__box"></span><span><b>{s.label}.</b> {s.text}<em class="ps__crit"> Critical</em></span></li>
+          <li data-print-item={s.id}><span class="ps__box"></span><span><b>{s.label}.</b> {s.text}{s.evidence && <span class="ps__ev"> {s.evidence}</span>}</span><span class="ps__critbox"><span class="ps__box"></span>Critical</span></li>
         ))}
       </ul>
       <p class="ps__verdict" data-print-verdict></p>
@@ -58,14 +58,9 @@ const displayUrl = PAGE_URL.replace(/^https?:\/\//, '').replace(/\/$/, '');
           </div>
         ))}
       </div>
-      <p class="ps__loop">↺ {loopLabel} (model, data, permissions or use). Routine updates follow normal change control.</p>
+      <p class="ps__loop">↺ {loopLabel} (model, data, permissions, connected tools or intended use), depending on risk and impact. Routine updates follow normal change control.</p>
     </section>
   </div>
-
-  <section class="ps__notes">
-    <h2>Board notes and actions</h2>
-    <div></div>
-  </section>
 
   <footer class="ps__foot">
     <p>Informed by ISO/IEC 42001, NIST AI RMF, the EU AI Act and the UK AI principles. {disclaimer}</p>
