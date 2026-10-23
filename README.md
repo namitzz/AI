@@ -16,7 +16,7 @@ Central idea: **sign-off is a licence, not a verdict.** The AI a board approved 
 - **Board scorecard**: evidence-only scoring, controls can be marked critical (a missing critical control blocks approval), "Licensed" or "Blocked" stamps, saved on the device, shareable as `/#score=N`.
 - **Informed by**: ISO/IEC 42001, NIST AI RMF, EU AI Act, UK AI principles, plus the UK AI Risk Management Toolkit.
 - **One-page A4 board checklist** via the print stylesheet, including the visitor's scorecard and critical flags.
-- **The 60-second lab**: five quick experiments, loaded on first use. Rubber stamp test (Q08), the 3am drill (Q07), spot the injection (Q03), the drift dial (Q05), and an AI licence certificate the visitor fills in and saves or shares as an image, made entirely on their phone.
+- **The 60-second lab**: four quick experiments in dialogs, bundled with the main script: rubber stamp test (Q08, flag 12 decisions in 20 seconds), the 3am drill (Q07, 30 seconds), spot the injection (Q03, 30 seconds) and the drift dial (Q05, illustrative review point). Ends with a text card, "Before you sign it off".
 - **Share a question**: every question card has a Share button. `/q/01/` to `/q/08/` carry a preview image for that question and forward to the card.
 - **Board checklist**: a blank one-page PDF (`public/board-checklist.pdf`) to download, plus "Print it with my answers", which fills in the visitor's scorecard.
 - **Save my contact**: `public/namit-sarna.vcf` adds Namit to the phone's contacts.

@@ -1,4 +1,5 @@
 // All interactivity for the page. Plain DOM, no framework.
+import { openLab } from './lab';
 
 const $ = <T extends Element = HTMLElement>(sel: string, root: ParentNode = document) => root.querySelector<T>(sel);
 const $$ = <T extends Element = HTMLElement>(sel: string, root: ParentNode = document) => Array.from(root.querySelectorAll<T>(sel));
@@ -558,7 +559,7 @@ function initLab() {
     const btn = (e.target as Element).closest<HTMLElement>('[data-open-lab]');
     if (!btn) return;
     e.preventDefault();
-    import('./lab').then((m) => m.openLab(btn.dataset.openLab!));
+    openLab(btn.dataset.openLab!, btn);
   });
 }
 

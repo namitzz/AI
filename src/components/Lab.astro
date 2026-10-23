@@ -4,20 +4,20 @@ import QArt from './QArt.astro';
 import Icon from './Icon.astro';
 import type { Art } from '../data/content';
 
-// Short hands-on experiences. The games themselves live in scripts/lab.ts and
-// load on first open; each dialog here is just the shell.
+// Short hands-on experiences. The games live in scripts/lab.ts; each dialog
+// here is just the shell.
 const labs: { id: string; title: string; line: string; q?: string; time: string; art?: Art }[] = [
-  { id: 'stamp', title: 'Rubber stamp test', line: 'Review 12 AI decisions in 20 seconds. Can you still spot the bad one?', q: '08', time: '20 sec', art: 'stack' },
-  { id: 'drill', title: 'The 3am drill', line: 'An AI is running wild. Pick who can actually switch it off.', q: '07', time: '30 sec', art: 'clock' },
-  { id: 'inject', title: 'Spot the injection', line: 'One of three emails is trying to hijack your AI. Which one?', q: '03', time: '30 sec', art: 'inject' },
-  { id: 'drift', title: 'The drift dial', line: 'Drag time forward and watch an approval quietly expire.', q: '05', time: '20 sec', art: 'update' },
+  { id: 'stamp', title: 'Rubber stamp test', line: '12 AI decisions, 20 seconds. Flag the ones that need a person to step in.', q: '08', time: '20 sec', art: 'stack' },
+  { id: 'drill', title: 'The 3am drill', line: 'An AI is misbehaving at 3am. Pick who can actually stop it.', q: '07', time: '30 sec', art: 'clock' },
+  { id: 'inject', title: 'Spot the injection', line: 'Three messages. One is trying to hijack your AI. Can you spot it?', q: '03', time: '30 sec', art: 'inject' },
+  { id: 'drift', title: 'The drift dial', line: 'Drag time forward and watch an approval approach review, then expire.', q: '05', time: '20 sec', art: 'update' },
 ];
 ---
 <section class="section" id="lab" aria-labelledby="lab-title">
   <div class="wrap">
     <SectionHead n="03" label="The 60-second lab" id="lab-title">
       <Fragment slot="title">Don’t take my word for it.<br /><span class="accent">Try it.</span></Fragment>
-      <p>Five quick experiments, none longer than a minute. Each one puts you in the board’s seat for a single question.</p>
+      <p>Four quick experiments, none longer than a minute, and one question to take away. Each experiment puts you in the board’s seat for a single question.</p>
     </SectionHead>
 
     <ul class="lab">
@@ -36,22 +36,17 @@ const labs: { id: string; title: string; line: string; q?: string; time: string;
         </li>
       ))}
       <li class="lab__wide" data-reveal>
-        <button class="lab__card lab__card--licence" type="button" data-open-lab="licence" aria-haspopup="dialog">
-          <span class="lab__meta"><span class="label lab__time">60 sec</span><span class="label">Take it with you</span></span>
-          <span class="lab__cert" aria-hidden="true">
-            <span class="label">AI system licence</span>
-            <span class="lab__cert-name">Your AI here</span>
-            <span class="lab__cert-stamp">Licensed</span>
-          </span>
-          <span class="lab__title">Issue your AI licence</span>
-          <span class="lab__line">Name a system you are responsible for, set the conditions that end its licence, and save the certificate as an image. Nothing leaves your phone.</span>
-          <span class="lab__go">Make mine <Icon name="arrow" /></span>
-        </button>
+        <div class="lab__card lab__card--reflect lab__text">
+          <span class="lab__meta"><span class="label lab__time">To take away</span></span>
+          <h3 class="lab__title" id="lab-reflect-title">Before you sign it off</h3>
+          <p class="lab__line">Think of an AI system you use or work with. What would make you stop trusting it? Who would be responsible if it failed? And what evidence would you need before allowing it to continue?</p>
+          <p class="lab__takeaway">If you can’t explain why it’s safe to continue, are you ready to sign it off?</p>
+        </div>
       </li>
     </ul>
   </div>
 
-  {[...labs.map((l) => ({ id: l.id, title: l.title })), { id: 'licence', title: 'Issue your AI licence' }].map((l) => (
+  {labs.map((l) => (
     <dialog class="lab-dlg" id={`lab-${l.id}`} aria-labelledby={`lab-${l.id}-title`} data-lab={l.id}>
       <div class="lab-dlg__bar">
         <p class="lab-dlg__title" id={`lab-${l.id}-title`}>{l.title}</p>
