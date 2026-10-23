@@ -240,6 +240,6 @@ export const toolkit = {
   href: 'https://www.gov.uk/government/publications/ai-risk-management-toolkit',
 };
 
-export const disclaimer = 'An awareness resource for discussion, not legal or compliance advice.';
+export const disclaimer = 'Illustrative examples for academic discussion. Not legal, compliance or professional advice, and not a validated or certified method.';
 
 export const allQuestions = pillars.flatMap((p) => p.questions.map((q) => ({ ...q, pillar: p.id, pillarName: p.name })));

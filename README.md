@@ -13,7 +13,7 @@ Central idea: **sign-off is a licence, not a verdict.** The AI a board approved 
 - **The 8 questions**: four-pillar quadrant (ARIA tabs), each question with a line illustration, why it matters and what good looks like.
 - **The pilot trap**: Gartner forecast (29 July 2024), presented as a forecast.
 - **The investment gate**: three gates with the licence loop animation: a material change hits Run, the licence expires, and it loops back to Scale for reassessment. Illustrative, not a validated method.
-- **Board scorecard**: evidence-only scoring, controls can be marked critical (a missing critical control blocks approval), "Licensed" or "Blocked" stamps, saved on the device, shareable as `/#score=N`.
+- **Board scorecard**: an illustrative discussion aid. Evidence-only scoring, controls can be marked critical (a missing critical control blocks approval in the exercise), "Evidenced" or "Blocked" stamps, saved on the device, shareable as `/#score=N`.
 - **Informed by**: ISO/IEC 42001, NIST AI RMF, EU AI Act, UK AI principles, plus the UK AI Risk Management Toolkit.
 - **One-page A4 board checklist** via the print stylesheet, including the visitor's scorecard and critical flags.
 - **The 60-second lab**: four quick experiments in dialogs, bundled with the main script: rubber stamp test (Q08, flag 12 decisions in 20 seconds), the 3am drill (Q07, 30 seconds), spot the injection (Q03, 30 seconds) and the drift dial (Q05, illustrative review point). Ends with a text card, "Before you sign it off".
