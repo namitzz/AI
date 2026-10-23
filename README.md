@@ -22,6 +22,7 @@ Central idea: **sign-off is a licence, not a verdict.** The AI a board approved 
 - **Save my contact**: `public/namit-sarna.vcf` adds Namit to the phone's contacts.
 - **Works offline**: a service worker (`public/sw.js`) keeps the page available on weak venue signal.
 - **Event day banner**: only shows on 4 November 2026 (London time).
+- **Terms, privacy and accessibility**: `/legal/`, a plain-English page linked from the footer. Educational use only, not advice, "licence" is a metaphor, what is stored on the device, and known accessibility limits.
 - **Stand mode**: `/stand/` is a full-screen page for a laptop at the poster: the 3D shield, the questions cycling, and a large QR code. Press F for full screen, arrow keys to step. It keeps the screen awake where the browser allows.
 
 Stack: [Astro](https://astro.build) static output, vanilla TypeScript (about 5 kB gzipped, plus the 3 kB WebGL shield loaded after first paint). All graphics are inline SVG or WebGL; the only images are generated PNGs for social sharing and icons.

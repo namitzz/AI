@@ -1,0 +1,100 @@
+---
+// Terms of use, privacy, accessibility and credits, in plain English.
+import Base from '../layouts/Base.astro';
+import { author, event, site, disclaimer } from '../data/content';
+import { BASE_PATH, ANALYTICS } from '../../site.config.mjs';
+
+const home = `${BASE_PATH}/`;
+const updated = '23 October 2026';
+const onVercel = ANALYTICS === 'vercel';
+const host = onVercel ? 'Vercel' : 'GitHub Pages';
+---
+<Base title={`Terms, privacy and accessibility | ${site.title}`}>
+  <header class="legal-bar">
+    <div class="wrap legal-bar__inner">
+      <a class="brand" href={home}>
+        <svg class="brand__mark" viewBox="0 0 32 32" aria-hidden="true">
+          <path d="M16 2.5 L27 6.5 V15.5 C27 22 22.5 26.8 16 29.5 C9.5 26.8 5 22 5 15.5 V6.5 Z" />
+          <path class="brand__check" d="M11 16 L14.5 19.5 L21 12.5" />
+        </svg>
+        <span class="brand__word">Sign <span class="accent">off</span></span>
+      </a>
+      <a class="btn btn--ghost btn--sm" href={home}>Back to the site</a>
+    </div>
+  </header>
+
+  <main id="main" class="legal wrap">
+    <p class="eyebrow"><span class="tag">Info</span><span>Last updated {updated}</span></p>
+    <h1 class="display legal__title">Terms, privacy and <span class="accent">accessibility</span></h1>
+    <p class="legal__lede">A short, plain-English summary of how this website works and what it is for.</p>
+
+    <nav class="legal__toc" aria-label="On this page">
+      <a href="#terms">Terms of use</a>
+      <a href="#privacy">Privacy and cookies</a>
+      <a href="#accessibility">Accessibility</a>
+      <a href="#credits">Credits</a>
+    </nav>
+
+    <section id="terms" aria-labelledby="terms-title">
+      <h2 id="terms-title">Terms of use</h2>
+      <h3>What this site is</h3>
+      <p>This website is a personal MSc project by {author.name} ({author.course}). It accompanies a poster at {event.name} ({event.hosts}), {event.venue}, on {event.date}. It is an educational resource for raising awareness of AI governance.</p>
+      <p>Views expressed are the author’s own. The site is not endorsed by, and does not speak for, Aston University, TÜV SÜD, the IET or any other organisation mentioned.</p>
+      <h3>Not advice</h3>
+      <p>{disclaimer} The questions, investment gate, scorecard and experiments are simplified examples for discussion. They do not establish compliance with any law or standard, do not replace a system-specific risk assessment, and should not be relied on for decisions. For decisions about a real AI system, seek appropriate professional advice.</p>
+      <p>Where the site uses the word “licence”, it is a metaphor for conditional approval. Nothing on this site grants, certifies or represents a licence, approval, certification or accreditation of any kind.</p>
+      <h3>Examples and sources</h3>
+      <p>All scenarios, organisations, people, figures and dates in the examples and experiments are fictional, unless a source is named. Third-party figures, such as the Gartner prediction, are attributed to their source and may change or be superseded. References to standards, frameworks, laws and guidance are summaries; always read the original source.</p>
+      <h3>Accuracy</h3>
+      <p>The content is provided as is, in good faith, and may contain errors or become out of date. It is not guaranteed to be complete, accurate or current.</p>
+      <h3>External links</h3>
+      <p>Links to other websites are provided for convenience. Their content and privacy practices are their owners’ responsibility.</p>
+      <h3>Using the content</h3>
+      <p>You are welcome to share links to this site and the board checklist PDF for non-commercial, educational purposes, with credit to {author.name}. Names of organisations, standards and laws belong to their respective owners and are used only to identify them.</p>
+    </section>
+
+    <section id="privacy" aria-labelledby="privacy-title">
+      <h2 id="privacy-title">Privacy and cookies</h2>
+      <h3>What the site does not do</h3>
+      <p>This site has no accounts, forms or sign-up, and does not ask for your name or contact details. It does not use cookies or advertising trackers.{!onVercel && ' It does not use analytics.'}</p>
+      <h3>What stays on your device</h3>
+      <ul>
+        <li><b>Scorecard answers.</b> Your ticks and “critical” marks are saved in your browser’s local storage so they are still there when you come back. They are not sent anywhere. The Reset button, or clearing your browser’s site data, removes them.</li>
+        <li><b>Offline copy.</b> Your browser may keep a copy of the page so it loads with poor signal. Clearing site data removes it.</li>
+        <li><b>Experiments.</b> Everything in the 60-second lab runs on your device. Nothing you select is sent or stored.</li>
+        <li><b>Sharing.</b> “Share my score” uses your device’s share sheet or copies a link. The link contains only your score, such as #score=3, and nothing that identifies you.</li>
+      </ul>
+      <h3>Third parties involved in loading the page</h3>
+      <ul>
+        <li><b>Hosting.</b> The site is hosted on {host}. As with any website, the host receives technical information such as your IP address when the page is requested, and may log it for security and reliability, under its own privacy policy.</li>
+        <li><b>Fonts.</b> Fonts are loaded from Google Fonts, so Google receives your IP address and browser details when the fonts are requested, under Google’s privacy policy.</li>
+        {onVercel && <li><b>Visit counts.</b> Vercel Web Analytics counts page views without cookies, under Vercel’s privacy policy.</li>}
+        <li><b>LinkedIn.</b> Nothing is sent to LinkedIn unless you choose to follow the “Connect on LinkedIn” link.</li>
+      </ul>
+      <h3>Questions</h3>
+      <p>For any question about this site, contact {author.name} on <a href={author.linkedin} target="_blank" rel="noopener">LinkedIn<span class="visually-hidden"> (opens in a new tab)</span></a>.</p>
+    </section>
+
+    <section id="accessibility" aria-labelledby="access-title">
+      <h2 id="access-title">Accessibility</h2>
+      <p>The site aims to meet the Web Content Accessibility Guidelines (WCAG) 2.1 at level AA. It has been designed to work with a keyboard, at phone sizes from 360 pixels wide, in light and dark mode, and with reduced motion settings.</p>
+      <p>It has been checked with automated tools and by testing keyboard use and layouts in a desktop browser. It has not been tested with every screen reader or device, so some issues may remain. Known limitations:</p>
+      <ul>
+        <li>The 3D shield on the home page is decorative; screen readers get a short text description instead.</li>
+        <li>The experiments use countdowns of 20 or 30 seconds as part of the exercise. There is no option to extend them, but each can be restarted as many times as you like, and nothing is lost when time runs out.</li>
+      </ul>
+      <p>If something does not work for you, please let {author.name} know on <a href={author.linkedin} target="_blank" rel="noopener">LinkedIn<span class="visually-hidden"> (opens in a new tab)</span></a>.</p>
+    </section>
+
+    <section id="credits" aria-labelledby="credits-title">
+      <h2 id="credits-title">Credits</h2>
+      <ul>
+        <li>Created by {author.name}.</li>
+        <li>Typefaces: Archivo, IBM Plex Sans and IBM Plex Mono, used under the SIL Open Font License via Google Fonts.</li>
+        <li>Built with Astro. All illustrations are original.</li>
+      </ul>
+    </section>
+
+    <p class="legal__back"><a class="btn btn--accent" href={home}>Back to the site</a></p>
+  </main>
+</Base>
