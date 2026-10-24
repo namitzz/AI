@@ -315,7 +315,7 @@ fieldset { border: 0; padding: 0; min-width: 0; }
   .topnav ul { display: flex; gap: 2px; }
   .topnav a {
     display: inline-flex; align-items: center;
-    min-height: 44px; padding: 0 12px;
+    min-height: 44px; padding: 0 clamp(8px, 1vw, 12px); white-space: nowrap;
     font-family: var(--font-mono); font-size: 0.8125rem; font-weight: 500;
     letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none;
     border: var(--b) solid transparent;
