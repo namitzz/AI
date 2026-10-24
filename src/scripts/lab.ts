@@ -376,7 +376,7 @@ function drift(root: HTMLElement): Cleanup {
     <label class="lx-switch">
       <input type="checkbox" role="switch" data-re />
       <span class="lx-switch__ui" aria-hidden="true"></span>
-      <span>Reassess each material change when it happens</span>
+      <span>Reassess each material change when it happens, and hold the month-${REVIEW_AT} review</span>
     </label>
     <div class="lx-card">
       <div class="lx-status" data-status-box>
@@ -384,7 +384,7 @@ function drift(root: HTMLElement): Cleanup {
         <span class="lx-status__text" data-status-text></span>
       </div>
       <div class="lx-review" aria-hidden="true">
-        <span class="label">Illustrative review point: month ${REVIEW_AT}</span>
+        <span class="label" data-review-label>Illustrative review point: month ${REVIEW_AT}</span>
         <span class="lx-review__track"><span data-review-bar></span></span>
       </div>
       <p class="label lx-card__head">What has changed since approval</p>
@@ -395,7 +395,7 @@ function drift(root: HTMLElement): Cleanup {
       </div>`).join('')}</dl>
     </div>
     <p class="lx-text lx-verdict" role="status" aria-live="polite" data-verdict></p>
-    <p class="lx-note">Illustrative only: the month-${REVIEW_AT} review point and the timing of each change are invented for this simulation. Real review cycles and reassessment triggers depend on each system’s risk and how much it changes.</p>
+    <p class="lx-note">Illustrative only: the month-${REVIEW_AT} review point and the timing of each change are invented for this simulation. With the switch on, it assumes every reassessment and review happens on time and finds the system can continue; a real one could also add conditions, require fixes or pause the system. Real review cycles and reassessment triggers depend on each system’s risk and how much it changes.</p>
     ${lesson('05', 'If the vendor updated the model last night, would we know?', 'Version pinning or change notices in vendor contracts. Re-testing triggered by material model changes, with routine updates handled through normal change control.')}
   </div>`));
   const range = root.querySelector<HTMLInputElement>('[data-range]')!;
@@ -405,12 +405,13 @@ function drift(root: HTMLElement): Cleanup {
   const statusText = root.querySelector<HTMLElement>('[data-status-text]')!;
   const verdict = root.querySelector<HTMLElement>('[data-verdict]')!;
   const reviewBar = root.querySelector<HTMLElement>('[data-review-bar]')!;
+  const reviewLabel = root.querySelector<HTMLElement>('[data-review-label]')!;
 
   const update = () => {
     const m = Number(range.value);
     root.querySelector('[data-m]')!.textContent = String(m);
     range.setAttribute('aria-valuetext', `Month ${m}`);
-    let unreviewed = 0;
+    let unreviewed = 0, reassessed = 0;
     CHANGES.forEach((r, i) => {
       const row = root.querySelector<HTMLElement>(`[data-r="${i}"]`)!;
       const changed = m >= r.at;
@@ -418,6 +419,7 @@ function drift(root: HTMLElement): Cleanup {
       row.classList.toggle('is-ok', changed && re.checked);
       row.querySelector('.lx-row__tag')!.textContent = changed ? (re.checked ? `✓ Reassessed in month ${r.at}` : `✗ Changed in month ${r.at}, not reassessed`) : '';
       if (changed && !re.checked) unreviewed++;
+      if (changed && re.checked) reassessed++;
     });
     // With reassessment on, the scheduled review happens at month 12 and the
     // next one falls at month 24. Without it, month 12 passes unreviewed.
@@ -425,6 +427,7 @@ function drift(root: HTMLElement): Cleanup {
     const nextReview = reviewed ? REVIEW_AT * 2 : REVIEW_AT;
     const toReview = nextReview - m;
     reviewBar.style.transform = `scaleX(${reviewed ? (m - REVIEW_AT) / REVIEW_AT : Math.min(1, m / REVIEW_AT)})`;
+    reviewLabel.textContent = `Illustrative review point: month ${nextReview}`;
 
     let state: 'valid' | 'soon' | 'needs' | 'expired';
     if (!re.checked && m >= REVIEW_AT) state = 'expired';
@@ -432,7 +435,7 @@ function drift(root: HTMLElement): Cleanup {
     else if (toReview <= 2) state = 'soon';
     else state = 'valid';
     box.dataset.state = state;
-    chip.textContent = { valid: '✓ Valid', soon: '◷ Review approaching', needs: '! Reassessment needed', expired: '✗ Expired' }[state];
+    chip.textContent = { valid: '✓ Valid', soon: toReview === 0 ? '◷ Review due' : '◷ Review approaching', needs: '! Reassessment needed', expired: '✗ Expired' }[state];
 
     const months = (n: number) => `${n} month${n === 1 ? '' : 's'}`;
     const changes = (n: number) => `${n} material change${n === 1 ? '' : 's'}`;
@@ -441,10 +444,12 @@ function drift(root: HTMLElement): Cleanup {
       : state === 'needs'
         ? `${changes(unreviewed)} since approval, not yet reassessed. Review point in ${months(toReview)}.`
         : state === 'soon'
-          ? `Review point in ${months(toReview)}.`
+          ? `${reassessed ? `${changes(reassessed)} reassessed so far. ` : ''}${toReview === 0 ? `Review due now, at month ${nextReview}.` : `Review point in ${months(toReview)}.`}`
           : reviewed
-            ? `Reviewed at month ${REVIEW_AT}. Next illustrative review: month ${REVIEW_AT * 2}.`
-            : `Matches what was approved. Review point in ${months(toReview)}.`;
+            ? `Reviewed at month ${REVIEW_AT}, with ${changes(reassessed)} reassessed so far. Next illustrative review: month ${REVIEW_AT * 2}.`
+            : reassessed
+              ? `${changes(reassessed)} since approval, ${reassessed === 1 ? 'reassessed' : 'each reassessed'} when it happened. Review point in ${months(toReview)}.`
+              : `Matches what was approved. Review point in ${months(toReview)}.`;
 
     verdict.textContent = state === 'expired'
       ? 'Same name, same contract, different system, and nobody has looked again. The approval no longer describes what is running.'

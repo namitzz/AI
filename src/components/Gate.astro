@@ -1,7 +1,7 @@
 ---
 import SectionHead from './SectionHead.astro';
 import Icon from './Icon.astro';
-import { stages, gateRule, gateNote, loopLabel, site } from '../data/content';
+import { stages, gateRule, gateNote, loopLabel } from '../data/content';
 
 const boxY = [16, 212, 408];
 const loop = 'M274 476 C344 476 344 280 274 280';
@@ -9,8 +9,8 @@ const loop = 'M274 476 C344 476 344 280 274 280';
 <section class="section" id="gate" aria-labelledby="gate-title">
   <div class="wrap">
     <SectionHead n="05" label="The investment gate" id="gate-title">
-      <Fragment slot="title">Three gates.<br /><span class="accent">One licence.</span></Fragment>
-      <p>Money moves in stages. The last gate is not a finish line: it grants a licence that holds while the system stays materially the same.</p>
+      <Fragment slot="title">Three gates.<br /><span class="accent">No finish line.</span></Fragment>
+      <p>Money moves in stages. The last gate approves operation, not a one-off verdict: the system is monitored while it runs, and material changes send it back for reassessment.</p>
     </SectionHead>
 
     <div class="rule" data-reveal>
@@ -68,7 +68,7 @@ const loop = 'M274 476 C344 476 344 280 274 280';
         </svg>
         <figcaption class="gate2__cap">
           <span class="label">Material change: to the model, data, permissions, connected tools or intended use</span>
-          <span class="gate2__idea display">{site.idea}</span>
+          <span class="gate2__idea display">Approved to run. Monitored. Reassessed.</span>
         </figcaption>
       </figure>
 
@@ -119,7 +119,7 @@ const loop = 'M274 476 C344 476 344 280 274 280';
                 <Icon name="arrow" />
               </button>
             ) : (
-              <p class="gate__licence">Routine updates can follow normal change control. Changes to the model, data, permissions, connected tools or intended use may need reassessment, depending on their risk and impact. Material ones go back to Gate 2.</p>
+              <p class="gate__reassess">Routine updates can follow normal change control. Changes to the model, data, permissions, connected tools or intended use may need reassessment, depending on their risk and impact. Material ones go back to Gate 2.</p>
             )}
           </div>
         ))}

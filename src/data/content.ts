@@ -177,7 +177,7 @@ export const stages: Stage[] = [
   {
     id: 'run',
     name: 'Run',
-    decision: 'Licence',
+    decision: 'Approve operation',
     checks: ['Named owner and audit trail', 'Drift and incident monitoring', 'Reassessed after any material change'],
   },
 ];
@@ -185,7 +185,7 @@ export const stages: Stage[] = [
 export const scoreInstruction = [
   'Score 1 only where there is evidence the control is operating; otherwise score 0.',
   'Mark a control as critical only where this system’s risk assessment requires it. A critical control without evidence blocks approval, whatever the total.',
-  'The score counts controls with evidence of operation. It is not a safety, maturity or compliance rating, a full score does not mean automatic approval, and it does not replace a system-specific risk assessment.',
+  'The score counts controls with evidence of operation. It is not a safety, maturity or compliance rating and does not replace a system-specific risk assessment. Verdicts are prompts for discussion, not approval recommendations, whatever the score.',
 ];
 
 export interface ScoreItem {
@@ -208,10 +208,10 @@ export const scoreItems: ScoreItem[] = [
 
 export const verdicts: { title: string; line: string }[] = [
   { title: 'No evidence. No sign-off.', line: 'No control has evidence that it is operating. Start with the questions below.' },
-  { title: 'Not ready to sign off', line: 'One control is operating. The rest are still promises.' },
-  { title: 'Not yet', line: 'More gaps than evidence. Worth closing them before committing significant spend.' },
-  { title: 'Test only', line: 'A contained pilot may be reasonable, with conditions on what is missing.' },
-  { title: 'Nearly there', line: 'One control lacks evidence. Find it before rollout.' },
+  { title: 'Not ready to sign off', line: 'One control has evidence. The rest are still promises.' },
+  { title: 'Not yet', line: 'More gaps than evidence. Worth discussing before any significant spend.' },
+  { title: 'Gaps remain', line: 'Some evidence, some gaps. A board might discuss whether a contained pilot, with conditions on what is missing, is reasonable.' },
+  { title: 'One gap left', line: 'One control lacks evidence. Worth finding before any wider rollout is discussed.' },
   { title: 'All five evidenced', line: 'Each control has evidence of operation. That supports a sign-off discussion but is not an approval in itself. Agree which material changes would trigger a fresh review.' },
 ];
 export const blockedVerdict = {
