@@ -20,8 +20,11 @@ export const site = {
   hook: 'The AI you approved may not be the AI that’s running.',
   support: 'Eight questions for boards, and why sign-off is a licence, not a verdict.',
   idea: 'Sign-off is a licence, not a verdict.',
+  // Used wherever the slogan needs its context spelled out.
+  licenceNote: 'Here, “licence” means conditional organisational approval, not a legal licence, certification or accreditation.',
+  // Search and social previews: no slogan, since it would appear without its context.
   description:
-    'The AI you approved may not be the AI that’s running. Eight questions for boards, and why sign-off is a licence, not a verdict.',
+    'The AI you approved may not be the AI that’s running. Eight questions for boards before they sign off on AI, and after.',
 };
 
 // The drift story: what changes after approval.

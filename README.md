@@ -9,7 +9,7 @@ By [Namit Sarna](https://www.linkedin.com/in/namitsarna), MSc AI for Business Tr
 Central idea: **sign-off is a licence, not a verdict.** The AI a board approved can be updated by the vendor, fed new data, given new permissions or used in new ways, and then it is no longer the thing they approved.
 
 - **Hero**: a 3D point-cloud shield (raw WebGL, about 3 kB) that assembles on load, turns when dragged, and drifts apart as you scroll. Falls back to the animated SVG shield without WebGL or with reduced motion. Big "Score yours" button.
-- **The gap**: scroll story. A sticky AI system licence changes row by row (model, data, permissions, use) until it is stamped "Not what you approved".
+- **The gap**: scroll story. A sticky "AI system approval record" card changes row by row (model, data, permissions, use) until it is stamped "Not what you approved".
 - **The 8 questions**: four-pillar quadrant (ARIA tabs), each question with a line illustration, why it matters and what good looks like.
 - **The pilot trap**: Gartner forecast (29 July 2024), presented as a forecast.
 - **The investment gate**: three gates (approve test, approve rollout, approve operation) with a loop animation: a material change hits Run, the approval expires, and it loops back to Scale for reassessment. Illustrative, not a validated method.

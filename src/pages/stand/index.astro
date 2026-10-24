@@ -10,7 +10,7 @@ import { QR_URL, PAGE_URL } from '../../../site.config.mjs';
 const qr = await QRCode.toString(QR_URL, { type: 'svg', errorCorrectionLevel: 'H', margin: 2, color: { dark: '#10141A', light: '#FFFFFF' } });
 const slides = [
   { kicker: 'Before you sign off on AI', text: site.hook, drift: true },
-  { kicker: 'The idea', text: site.idea },
+  { kicker: 'The idea · approval is conditional', text: site.idea },
   ...allQuestions.map((q) => ({ kicker: `Question ${q.n} · ${q.pillarName}`, text: q.q })),
   { kicker: 'The rule', text: 'No evidence. No sign-off.' },
 ];

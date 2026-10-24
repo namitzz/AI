@@ -304,7 +304,7 @@ function initGate() {
   initLicenceLoop(map);
 }
 
-// The signature motion: a change hits the running system, its licence
+// The signature motion: a change hits the running system, its approval
 // expires, and it travels the loop back to Gate 2 to be reassessed.
 function initLicenceLoop(map: SVGSVGElement) {
   const token = $<SVGAnimationElement>('[data-token]', map);
@@ -531,7 +531,7 @@ function initShare() {
     share({
       title: 'Before you sign off on AI',
       // A missing critical control travels with the score, so a high total cannot hide it.
-      text: `Our board scored ${currentScore}/5 on the AI sign-off scorecard${currentBlocked ? ', but a critical control has no evidence, so it is blocked' : ''}. Sign-off is a licence, not a verdict. Score yours:`,
+      text: `Our board scored ${currentScore}/5 on the AI sign-off scorecard${currentBlocked ? ', but a critical control has no evidence, so it is blocked' : ''}. An evidence-only exercise for discussion. Score yours:`,
       url: `${base}#score=${currentScore}${currentBlocked ? '&blocked=1' : ''}`,
     }, status);
   });

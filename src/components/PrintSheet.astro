@@ -13,7 +13,7 @@ const displayUrl = PAGE_URL.replace(/^https?:\/\//, '').replace(/\/$/, '');
     <div>
       <p class="ps__kicker">Board checklist · {event.name} · {event.date}</p>
       <h1 class="ps__title">Before you <span>sign off</span> on AI</h1>
-      <p class="ps__sub">{site.hook} {site.idea}</p>
+      <p class="ps__sub">{site.hook} {site.idea} {site.licenceNote}</p>
     </div>
     <div class="ps__qr">
       <Fragment set:html={qr} />

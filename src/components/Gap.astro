@@ -1,8 +1,8 @@
 ---
 import SectionHead from './SectionHead.astro';
-import { drift } from '../data/content';
+import { drift, site } from '../data/content';
 
-// What the licence card shows before and after each change.
+// What the approval record card shows before and after each change.
 const rows = [
   { key: 'model', dt: 'Model', was: 'v1.0, tested', now: 'v1.1, updated overnight' },
   { key: 'data', dt: 'Data', was: 'CRM records, 2025', now: '+ three new sources' },
@@ -14,14 +14,14 @@ const rows = [
   <div class="wrap">
     <SectionHead n="01" label="The gap" id="gap-title">
       <Fragment slot="title">Sign-off is a licence,<br /><span class="accent">not a verdict.</span></Fragment>
-      <p>Boards treat AI approval as a one-off moment. But the model they approved can be updated by the vendor, fed new data, given new permissions, connected to new tools or used in new ways. Then it is no longer the thing they approved. Not every update needs the board, but material changes deserve a fresh look. Here, “licence” is a metaphor for conditional approval, not a legal licence or certification.</p>
+      <p>Boards treat AI approval as a one-off moment. But the model they approved can be updated by the vendor, fed new data, given new permissions, connected to new tools or used in new ways. Then it is no longer the thing they approved. Not every update needs the board, but material changes deserve a fresh look. {site.licenceNote}</p>
     </SectionHead>
 
     <div class="gap__story" data-gap>
       <div class="gap__stage">
         <div class="licence" data-licence data-step="0" aria-hidden="true">
           <div class="licence__head">
-            <span class="label">AI system licence</span>
+            <span class="label">AI system approval record</span>
             <span class="label">Fictional example</span>
           </div>
           <div class="licence__title">
