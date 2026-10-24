@@ -192,18 +192,18 @@ export interface ScoreItem {
   id: string;
   label: string;
   text: string;
-  // Examples of evidence, where a control needs them spelled out.
-  evidence?: string;
+  // A short example of the evidence that would justify a tick.
+  evidence: string;
   // Questions from the 8 to start with when this control has no evidence.
   startWith: string[];
 }
 
 export const scoreItems: ScoreItem[] = [
-  { id: 'policy', label: 'Policy', text: 'Board-approved AI governance policy', startWith: ['04', '01'] },
-  { id: 'inventory', label: 'Inventory', text: 'All AI identified, including shadow AI and agents', startWith: ['05', '03'] },
-  { id: 'owner', label: 'Owner', text: 'One accountable executive', startWith: ['07', '06'] },
-  { id: 'appetite', label: 'Appetite', text: 'Risk appetite and tolerances defined', startWith: ['04', '02'] },
-  { id: 'assurance', label: 'Assurance', text: 'Continuous assurance, not a one-off check', evidence: 'For example: production monitoring against performance thresholds, drift checks, incident records and documented corrective actions.', startWith: ['05', '08'] },
+  { id: 'policy', label: 'Policy', text: 'Board-approved AI governance policy', evidence: 'For example: the approved policy, the board minute approving it and a review date.', startWith: ['04', '01'] },
+  { id: 'inventory', label: 'Inventory', text: 'All AI identified, including shadow AI and agents', evidence: 'For example: a current register of AI systems, vendors and agents, each with an owner.', startWith: ['05', '03'] },
+  { id: 'owner', label: 'Owner', text: 'One accountable executive', evidence: 'For example: documented ownership, including the authority to pause the system.', startWith: ['07', '06'] },
+  { id: 'appetite', label: 'Appetite', text: 'Risk appetite and tolerances defined', evidence: 'For example: approved tolerances and the thresholds that trigger escalation.', startWith: ['04', '02'] },
+  { id: 'assurance', label: 'Assurance', text: 'Continuous assurance, not a one-off check', evidence: 'For example: monitoring records against thresholds, drift checks, incident records and a tested fallback procedure.', startWith: ['05', '08'] },
 ];
 
 export const verdicts: { title: string; line: string }[] = [

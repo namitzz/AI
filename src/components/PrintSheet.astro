@@ -42,7 +42,7 @@ const displayUrl = PAGE_URL.replace(/^https?:\/\//, '').replace(/\/$/, '');
       <p class="ps__small">{scoreInstruction.join(' ')}</p>
       <ul>
         {scoreItems.map((s) => (
-          <li data-print-item={s.id}><span class="ps__box"></span><span><b>{s.label}.</b> {s.text}{s.evidence && <span class="ps__ev"> {s.evidence}</span>}</span><span class="ps__critbox"><span class="ps__box"></span>Critical</span></li>
+          <li data-print-item={s.id}><span class="ps__box"></span><span><b>{s.label}.</b> {s.text}<span class="ps__ev"> {s.evidence}</span></span><span class="ps__critbox"><span class="ps__box"></span>Critical</span></li>
         ))}
       </ul>
       <p class="ps__verdict" data-print-verdict></p>

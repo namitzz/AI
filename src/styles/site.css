@@ -1011,6 +1011,7 @@ fieldset { border: 0; padding: 0; min-width: 0; }
   font-variant-numeric: tabular-nums;
 }
 .score__val { color: var(--accent); display: inline-block; }
+.score.is-blocked .score__val { color: var(--muted); }
 @media (prefers-reduced-motion: no-preference) {
   .score__val.is-tick { animation: valTick .45s var(--ease-pop); }
 }
@@ -1629,15 +1630,15 @@ button.lx-mail { transition: background-color .2s; }
   .ps__pillar { border: 1.5px solid #10141A; padding: 2.5mm 3mm; break-inside: avoid; }
   .ps h2 { font-family: var(--font-mono); font-size: 6.8pt; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600; }
   .ps__pillar h2 { display: inline-block; background: #10141A; color: #fff; padding: 0.4mm 1.6mm; }
-  .ps__q { margin-top: 1.6mm; }
+  .ps__q { margin-top: 0.9mm; }
   .ps__q h3 { font-size: 9.8pt; font-weight: 600; line-height: 1.2; }
   .ps__q h3 span { font-family: var(--font-mono); color: #2541E6; }
   .ps__q p { margin-top: 0.7mm; }
   .ps__q b { font-weight: 600; }
-  .ps__bottom { display: grid; grid-template-columns: 1.15fr 1fr; gap: 3mm; margin-top: 3mm; }
+  .ps__bottom { display: grid; grid-template-columns: 1.27fr 1fr; gap: 3mm; margin-top: 2mm; }
   .ps__score, .ps__gate { border: 1.5px solid #10141A; padding: 2.5mm 3mm; break-inside: avoid; }
   .ps__score h2 span { color: #2541E6; margin-left: 2mm; font-size: 9pt; }
-  .ps__score li, .ps__gate li { display: flex; gap: 1.6mm; align-items: flex-start; margin-top: 1.2mm; }
+  .ps__score li, .ps__gate li { display: flex; gap: 1.6mm; align-items: flex-start; margin-top: 0.9mm; }
   .ps__box { width: 2.8mm; height: 2.8mm; border: 1px solid #10141A; flex: none; margin-top: 0.4mm; }
   .ps__score li.is-checked > .ps__box { background: #2541E6; border-color: #2541E6; }
   .ps__verdict { margin-top: 2mm; font-weight: 600; }
@@ -1645,13 +1646,13 @@ button.lx-mail { transition: background-color .2s; }
   .ps__stages h3 { font-size: 8.6pt; font-weight: 600; margin-top: 1.4mm; }
   .ps__notes { margin-top: 2.5mm; border: 1.5px solid #10141A; padding: 2.5mm 3mm 1mm; }
   .ps__notes div { height: 6mm; border-bottom: 1px solid #B9BCC2; }
-  .ps__small { font-size: 7.2pt; color: #474C55; margin-top: 1mm; }
-  .ps__ev { color: #474C55; font-size: 7.2pt; }
+  .ps__small { font-size: 7.2pt; line-height: 1.22; color: #474C55; margin-top: 1mm; }
+  .ps__ev { color: #474C55; font-size: 7pt; line-height: 1.2; }
   .ps__critbox { display: flex; gap: 1mm; align-items: flex-start; margin-left: auto; flex: none; font-family: var(--font-mono); font-size: 6.4pt; text-transform: uppercase; letter-spacing: 0.04em; }
   .ps__score li.is-critical .ps__critbox .ps__box { background: #10141A; }
   .ps__rule { font-weight: 600; font-size: 8.4pt; margin: 1mm 0 1.4mm; }
   .ps__rule span { font-weight: 400; color: #474C55; font-size: 7.4pt; }
   .ps__run h3 { color: #2541E6; }
   .ps__loop { margin-top: 2mm; font-weight: 600; color: #2541E6; }
-  .ps__foot { display: flex; justify-content: space-between; gap: 4mm; margin-top: 3mm; padding-top: 2mm; border-top: 2px solid #10141A; font-family: var(--font-mono); font-size: 6.5pt; }
+  .ps__foot { display: flex; justify-content: space-between; gap: 4mm; margin-top: 2mm; padding-top: 1.5mm; border-top: 2px solid #10141A; font-family: var(--font-mono); font-size: 6.5pt; }
 }

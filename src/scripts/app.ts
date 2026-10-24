@@ -161,7 +161,7 @@ function initHero() {
       setDrift = api.setDrift;
       onScroll();
     }).catch(startPackets);
-    const idle = (fn: () => void) => ('requestIdleCallback' in window ? window.requestIdleCallback(fn, { timeout: 2000 }) : window.setTimeout(fn, 200));
+    const idle = (fn: () => void) => ('requestIdleCallback' in window ? window.requestIdleCallback(fn, { timeout: 2000 }) : setTimeout(fn, 200));
     window.addEventListener('load', () => window.setTimeout(() => idle(mount), 2200), { once: true });
   } else {
     startPackets();
@@ -368,6 +368,7 @@ function sharedScoreFromHash(): number | null {
   const m = /(?:^|[#&])score=([0-5])\b/.exec(location.hash);
   return m ? Number(m[1]) : null;
 }
+const sharedBlockedFromHash = () => /(?:^|[#&])blocked=1\b/.test(location.hash);
 
 let currentScore = 0;
 let currentBlocked = false;
@@ -406,7 +407,8 @@ function initScorecard() {
 
     if (val) val.textContent = String(score);
     if (user && score !== prev) replay(val, 'is-tick');
-    barScores.forEach((b) => { b.textContent = `${score}/5`; });
+    // A blocked scorecard never shows as a bare score elsewhere on the page.
+    barScores.forEach((b) => { b.textContent = currentBlocked ? `${score}/5 blocked` : `${score}/5`; });
     segs.forEach((s, i) => s.classList.toggle('on', i < score));
     $$('[data-row]', root).forEach((r) => r.classList.toggle('is-blocking', blocking.includes(r.dataset.row!)));
 
@@ -489,7 +491,8 @@ function initScorecard() {
   const banner = $('[data-shared-banner]');
   const sharedText = $('[data-shared-text]');
   if (shared !== null && banner && sharedText) {
-    sharedText.textContent = `A colleague’s board scored ${shared}/5. How does yours compare?`;
+    const blocked = sharedBlockedFromHash() ? ', with a critical control still missing evidence' : '';
+    sharedText.textContent = `A colleague’s board scored ${shared}/5${blocked}. How does yours compare?`;
     banner.hidden = false;
     requestAnimationFrame(() => document.getElementById('scorecard')?.scrollIntoView({ block: 'start' }));
   }
@@ -527,8 +530,9 @@ function initShare() {
   $('[data-share]')?.addEventListener('click', () => {
     share({
       title: 'Before you sign off on AI',
-      text: `Our board scored ${currentScore}/5 on the AI sign-off scorecard. Sign-off is a licence, not a verdict. Score yours:`,
-      url: `${base}#score=${currentScore}`,
+      // A missing critical control travels with the score, so a high total cannot hide it.
+      text: `Our board scored ${currentScore}/5 on the AI sign-off scorecard${currentBlocked ? ', but a critical control has no evidence, so it is blocked' : ''}. Sign-off is a licence, not a verdict. Score yours:`,
+      url: `${base}#score=${currentScore}${currentBlocked ? '&blocked=1' : ''}`,
     }, status);
   });
   $$('[data-share-page]').forEach((b) => b.addEventListener('click', () => {
@@ -581,8 +585,11 @@ function initQuestionShare() {
 
 function initToday() {
   const london = new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/London', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date());
+  // Before and on the day only; on the day itself it reads "Today".
   const el = $('[data-today]');
-  if (el) el.hidden = london !== '2026-11-04';
+  if (el) el.hidden = london > '2026-11-04';
+  const text = $('[data-today-text]');
+  if (text && london === '2026-11-04') text.textContent = 'Today at IET London, Savoy Place.';
   // After the event, the hero's event line switches to the past tense.
   if (london > '2026-11-04') {
     $$('[data-event-tense]').forEach((n) => { n.textContent = 'presented'; });

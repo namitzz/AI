@@ -2,7 +2,7 @@
 // possible and fall back to the last copy; static files and fonts are served
 // from the cache and refreshed in the background.
 // Bump the name to drop everything cached by earlier versions.
-const CACHE = 'signoff-v2';
+const CACHE = 'signoff-v3';
 const BASE = new URL(self.registration.scope).pathname;
 const PRECACHE = [BASE, `${BASE}s/`, `${BASE}board-checklist.pdf`, `${BASE}favicon.svg`];
 

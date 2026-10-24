@@ -4,7 +4,10 @@ import Icon from './Icon.astro';
 import QArt from './QArt.astro';
 
 // Questions that have a hands-on experiment in the lab.
-const tryIt: Record<string, string> = { '03': 'inject', '05': 'drift', '07': 'drill', '08': 'stamp' };
+// Question → lab experiment, with how long that experiment takes.
+const tryIt: Record<string, { id: string; secs: number }> = {
+  '03': { id: 'inject', secs: 30 }, '05': { id: 'drift', secs: 20 }, '07': { id: 'drill', secs: 30 }, '08': { id: 'stamp', secs: 20 },
+};
 import { pillars } from '../data/content';
 ---
 <section class="section section--surface" id="questions" aria-labelledby="questions-title">
@@ -93,8 +96,8 @@ import { pillars } from '../data/content';
                   </dl>
                   <div class="q-card__actions">
                     {tryIt[q.n] && (
-                      <button class="btn btn--accent btn--sm" type="button" data-open-lab={tryIt[q.n]} aria-haspopup="dialog">
-                        Try it in 30 seconds
+                      <button class="btn btn--accent btn--sm" type="button" data-open-lab={tryIt[q.n].id} aria-haspopup="dialog">
+                        Try it in {tryIt[q.n].secs} seconds
                       </button>
                     )}
                     <button class="btn btn--ghost btn--sm" type="button" data-share-q={q.n} data-share-text={q.q}>
