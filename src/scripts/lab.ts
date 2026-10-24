@@ -452,7 +452,7 @@ function drift(root: HTMLElement): Cleanup {
               : `Matches what was approved. Review point in ${months(toReview)}.`;
 
     verdict.textContent = state === 'expired'
-      ? 'Same name, same contract, different system, and nobody has looked again. The approval no longer describes what is running.'
+      ? 'Same name, same contract, but the system has changed and nobody has looked again. The approval no longer describes what is running.'
       : state === 'needs'
         ? 'The system has changed materially since sign-off. The approval may need reassessing before it can be relied on.'
         : re.checked && m >= CHANGES[0].at

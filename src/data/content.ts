@@ -148,7 +148,8 @@ export const pilotTrap = {
     'In July 2024, Gartner predicted that at least 30% of generative AI projects would be abandoned after proof of concept by the end of 2025, citing poor data quality, inadequate risk controls, escalating costs or unclear business value.',
   source: 'Gartner press release, 29 July 2024',
   caveat: 'A prediction about the end of 2025, not a measured abandonment rate.',
-  line: 'Getting AI live was the 2025 problem. Keeping it approved is the next one.',
+  // The takeaway, split where the accent colour starts.
+  line: ['A successful pilot', 'is not proof of lasting business value.'],
   reasons: ['Poor data quality', 'Inadequate risk controls', 'Escalating costs', 'Unclear business value'],
 };
 

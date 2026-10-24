@@ -1234,16 +1234,6 @@ fieldset { border: 0; padding: 0; min-width: 0; }
 .closer__title { font-size: clamp(2.8rem, calc(15.2vw - 5px), 11rem); margin-top: 22px; line-height: 0.86; }
 .closer__title .line { display: block; }
 .closer__quote { margin-top: 32px; font-size: clamp(1.5rem, 6vw, 2.6rem); font-weight: 600; line-height: 1.2; max-width: 22ch; }
-.brake { position: relative; display: inline-block; }
-.brake svg {
-  position: absolute;
-  left: -0.04em; right: -0.04em;
-  top: 50%;
-  width: calc(100% + 0.08em);
-  height: 0.16em;
-  overflow: visible;
-}
-.brake path { fill: none; stroke: var(--accent); stroke-width: 10; }
 .accel { display: inline-block; position: relative; color: var(--accent); }
 .accel::after {
   content: '';
@@ -1257,8 +1247,6 @@ fieldset { border: 0; padding: 0; min-width: 0; }
 @media (prefers-reduced-motion: no-preference) {
   .js .closer__title .line { clip-path: inset(0 0 100% 0); transform: translateY(40%); }
   .closer__title.in .line { animation: lineUp .9s var(--ease) both; animation-delay: calc(var(--l) * 140ms); }
-  .js .brake path { stroke-dasharray: 1 1; stroke-dashoffset: 1; }
-  .closer__quote.in .brake path { animation: draw .5s var(--ease) .5s both; }
   .js .accel { transform: translateX(-30%) skewX(-24deg); opacity: 0; }
   .closer__quote.in .accel { animation: accel .8s cubic-bezier(.15, .9, .2, 1.05) .9s both; }
   .js .accel::after { transform: scaleX(0); }
