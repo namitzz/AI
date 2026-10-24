@@ -6,8 +6,12 @@ const $$ = <T extends Element = HTMLElement>(sel: string, root: ParentNode = doc
 const motionOK = () => !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const STORE_KEY = 'signoff-scorecard-v2';
 
+// Browsers block vibration until the visitor has interacted with the page,
+// and log an error if it is tried before, so scroll-driven effects stay quiet.
+const hasInteracted = () => (navigator as Navigator & { userActivation?: { hasBeenActive: boolean } }).userActivation?.hasBeenActive ?? true;
+
 function buzz(pattern: number | number[]) {
-  if (motionOK() && 'vibrate' in navigator) {
+  if (motionOK() && 'vibrate' in navigator && hasInteracted()) {
     try { navigator.vibrate(pattern); } catch { /* not allowed, ignore */ }
   }
 }
@@ -554,6 +558,28 @@ function initHashLinks() {
   };
   window.addEventListener('hashchange', handle);
   handle();
+
+  // A direct link jumps before the web fonts swap in and change the height of
+  // everything above the target. Once they have, jump again (unless the
+  // visitor has already started scrolling), then turn on smooth scrolling.
+  let moved = false;
+  const stop = () => { moved = true; };
+  ['wheel', 'touchstart', 'keydown'].forEach((t) => window.addEventListener(t, stop, { once: true, passive: true }));
+  const settle = () => {
+    if (!moved) {
+      let target: HTMLElement | null = null;
+      const q = /^#q-(0[1-8])$/.exec(location.hash);
+      if (q) target = document.getElementById(`q-${q[1]}`);
+      else if (sharedScoreFromHash() !== null) target = document.getElementById('scorecard');
+      else if (location.hash.length > 1) {
+        try { target = document.getElementById(decodeURIComponent(location.hash.slice(1))); } catch { /* malformed hash */ }
+      }
+      target?.scrollIntoView({ block: 'start' });
+    }
+    document.documentElement.classList.add('is-settled');
+  };
+  const loaded = new Promise((r) => (document.readyState === 'complete' ? r(0) : window.addEventListener('load', r, { once: true })));
+  Promise.all([loaded, document.fonts?.ready]).then(() => requestAnimationFrame(settle), settle);
 }
 
 /* ---------------- The 60-second lab ---------------- */

@@ -390,8 +390,7 @@ function drift(root: HTMLElement): Cleanup {
       <p class="label lx-card__head">What has changed since approval</p>
       <dl>${CHANGES.map((r, i) => `<div class="lx-row" data-r="${i}">
         <dt class="label">${r.k}</dt>
-        <dd><span class="lx-row__was">${r.was}</span><span class="lx-row__now">${r.now}</span></dd>
-        <span class="lx-row__tag"></span>
+        <dd><span class="lx-row__was">${r.was}</span><span class="lx-row__now">${r.now}</span><span class="lx-row__tag"></span></dd>
       </div>`).join('')}</dl>
     </div>
     <p class="lx-text lx-verdict" role="status" aria-live="polite" data-verdict></p>

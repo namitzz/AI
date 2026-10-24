@@ -5,11 +5,11 @@ import { author, event, site, disclaimer } from '../data/content';
 import { BASE_PATH, ANALYTICS } from '../../site.config.mjs';
 
 const home = `${BASE_PATH}/`;
-const updated = '23 October 2026';
+const updated = '24 October 2026';
 const onVercel = ANALYTICS === 'vercel';
 const host = onVercel ? 'Vercel' : 'GitHub Pages';
 ---
-<Base title={`Terms, privacy and accessibility | ${site.title}`}>
+<Base title={`Terms, privacy and accessibility | ${site.title}`} path="legal/" description="Terms of use, privacy and cookies, and accessibility for this educational companion site to a poster on AI governance.">
   <header class="legal-bar">
     <div class="wrap legal-bar__inner">
       <a class="brand" href={home}>
@@ -60,9 +60,9 @@ const host = onVercel ? 'Vercel' : 'GitHub Pages';
       <h3>What stays on your device</h3>
       <ul>
         <li><b>Scorecard answers.</b> Your ticks and “critical” marks are saved in your browser’s local storage so they are still there when you come back. They are not sent anywhere. The Reset button, or clearing your browser’s site data, removes them.</li>
-        <li><b>Offline copy.</b> Your browser may keep a copy of the page so it loads with poor signal. Clearing site data removes it.</li>
+        <li><b>Offline copy.</b> Your browser may keep a copy of the page, the checklist PDF and the fonts so the site loads with poor signal. Clearing site data removes it.</li>
         <li><b>Experiments.</b> Everything in the 60-second lab runs on your device. Nothing you select is sent or stored.</li>
-        <li><b>Sharing.</b> “Share my score” uses your device’s share sheet or copies a link. The link contains only your score, such as #score=3, and nothing that identifies you.</li>
+        <li><b>Sharing.</b> “Share my score” uses your device’s share sheet or copies a link. The link contains only your total and, if a control you marked critical has no evidence, the word “blocked” (for example #score=3&amp;blocked=1). It does not say which controls you ticked and contains nothing that identifies you. Nothing is shared unless you choose to.</li>
       </ul>
       <h3>Third parties involved in loading the page</h3>
       <ul>
@@ -77,8 +77,8 @@ const host = onVercel ? 'Vercel' : 'GitHub Pages';
 
     <section id="accessibility" aria-labelledby="access-title">
       <h2 id="access-title">Accessibility</h2>
-      <p>The site aims to meet the Web Content Accessibility Guidelines (WCAG) 2.1 at level AA. It has been designed to work with a keyboard, at phone sizes from 360 pixels wide, in light and dark mode, and with reduced motion settings.</p>
-      <p>It has been checked with automated tools and by testing keyboard use and layouts in a desktop browser. It has not been tested with every screen reader or device, so some issues may remain. Known limitations:</p>
+      <p>The site aims to meet the Web Content Accessibility Guidelines (WCAG) 2.1 at level AA. It has been designed to work with a keyboard, at screen widths from 320 pixels, in light and dark mode, and with reduced motion settings.</p>
+      <p>It has been checked with automated tools and by testing keyboard use and layouts in a desktop browser, including emulated phone sizes. It has not been tested with every screen reader or device, so some issues may remain. Known limitations:</p>
       <ul>
         <li>The 3D shield on the home page is decorative; screen readers get a short text description instead.</li>
         <li>The experiments use countdowns of 20 or 30 seconds as part of the exercise. There is no option to extend them, but each can be restarted as many times as you like, and nothing is lost when time runs out.</li>

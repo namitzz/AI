@@ -3,9 +3,11 @@ import '../styles/site.css';
 import { site, author, event } from '../data/content';
 import { PAGE_URL, BASE_PATH, ANALYTICS } from '../../site.config.mjs';
 
-interface Props { title?: string; noindex?: boolean }
-const { title, noindex = false } = Astro.props;
-const canonical = PAGE_URL;
+// path: for pages other than the home page (and its /s/ copy), so each one
+// is its own canonical page rather than a duplicate of the home page.
+interface Props { title?: string; noindex?: boolean; path?: string; description?: string }
+const { title, noindex = false, path = '', description = site.description } = Astro.props;
+const canonical = `${PAGE_URL}${path}`;
 const ogImage = `${PAGE_URL}og.png`;
 const fonts =
   'https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75,800..900&family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap';
@@ -15,7 +17,7 @@ const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'WebPage',
   name: fullTitle,
-  description: site.description,
+  description,
   url: canonical,
   author: { '@type': 'Person', name: author.name, sameAs: [author.linkedin] },
   about: {
@@ -37,7 +39,7 @@ const jsonLd = {
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <script is:inline>document.documentElement.classList.add('js');</script>
     <title>{fullTitle}</title>
-    <meta name="description" content={site.description} />
+    <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     {noindex && <meta name="robots" content="noindex" />}
     <meta name="author" content={author.name} />
@@ -52,7 +54,7 @@ const jsonLd = {
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Board sign off" />
     <meta property="og:title" content={`${site.title}: 8 questions every board should ask`} />
-    <meta property="og:description" content={site.description} />
+    <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={ogImage} />
     <meta property="og:image:width" content="1200" />
@@ -61,7 +63,7 @@ const jsonLd = {
     <meta property="og:locale" content="en_GB" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={`${site.title}: 8 questions every board should ask`} />
-    <meta name="twitter:description" content={site.description} />
+    <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />

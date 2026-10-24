@@ -18,6 +18,7 @@ const shortUrl = PAGE_URL.replace(/^https?:\/\//, '').replace(/\/$/, '');
 ---
 <Base title={`Stand mode | ${site.title}`} noindex>
   <main class="stand" data-stand>
+    <h1 class="visually-hidden">{site.title}: stand mode</h1>
     <div class="stand__left">
       <p class="eyebrow"><span class="tag">{event.dateShort}</span><span>{event.venue}</span></p>
       <div class="stand__slides">

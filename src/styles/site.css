@@ -69,8 +69,10 @@ html {
   text-size-adjust: 100%;
   scroll-padding-top: calc(var(--bar-h) + var(--safe-top) + 12px);
 }
+/* Smooth scrolling starts once the page has settled: an animated jump to a
+   direct link would land in the wrong place when the web fonts swap in. */
 @media (prefers-reduced-motion: no-preference) {
-  html { scroll-behavior: smooth; }
+  html.is-settled { scroll-behavior: smooth; }
 }
 
 body {
@@ -709,7 +711,7 @@ fieldset { border: 0; padding: 0; min-width: 0; }
 /* ==========================================================
    01 The gap (scroll story)
    ========================================================== */
-.gap__story { display: grid; position: relative; }
+.gap__story { display: grid; grid-template-columns: minmax(0, 1fr); position: relative; }
 .gap__stage {
   position: sticky;
   top: calc(var(--bar-h) + var(--safe-top) + 12px);
@@ -812,7 +814,7 @@ fieldset { border: 0; padding: 0; min-width: 0; }
 .gap__step--end .gap__body { color: var(--ink); font-weight: 500; }
 
 @media (min-width: 1024px) {
-  .gap__story { grid-template-columns: 1fr 1fr; column-gap: 64px; }
+  .gap__story { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 64px; }
   .gap__stage { grid-column: 2; grid-row: 1; top: calc(50vh - 200px); align-self: start; }
   .gap__steps { grid-column: 1; grid-row: 1; }
   .gap__step { min-height: 80vh; }
@@ -1537,7 +1539,7 @@ button.lx-mail { transition: background-color .2s; }
 .lx-row__now { display: none; color: var(--accent); font-weight: 600; }
 .lx-row.is-changed .lx-row__was { text-decoration: line-through; color: var(--muted); }
 .lx-row.is-changed .lx-row__now { display: block; }
-.lx-row__tag { grid-column: 2; font-family: var(--font-mono); font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+.lx-row__tag { font-family: var(--font-mono); font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
 .lx-row.is-changed .lx-row__tag { color: var(--ink); }
 .lx-row.is-ok .lx-row__tag { color: var(--accent); }
 .lx-dial { display: grid; gap: 10px; }
